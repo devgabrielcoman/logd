@@ -10,10 +10,11 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.os.ParcelableCompat;
 
 import com.gabrielcoman.logd.activities.AnswerActivity;
-import com.gabrielcoman.logd.activities.MainActivity;
 import com.gabrielcoman.logd.manager.QuestionManager;
 import com.gabrielcoman.logd.models.Question;
 import com.gabrielcoman.logd.system.notification.NotificationCreator;

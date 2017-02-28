@@ -5,11 +5,11 @@
 package com.gabrielcoman.logd.models;
 
 import android.content.Context;
-import android.graphics.Color;
 
 import com.gabrielcoman.logd.R;
 
 import org.json.JSONObject;
+import org.xml.sax.SAXNotRecognizedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,7 @@ import java.util.List;
 import tv.superawesome.lib.sajsonparser.SABaseObject;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sajsonparser.SAJsonToList;
+import tv.superawesome.lib.sajsonparser.SAListToJson;
 
 public class Question extends SABaseObject {
 
@@ -27,12 +28,12 @@ public class Question extends SABaseObject {
         // do nothing
     }
 
-    public Question (JSONObject jsonObject) {
+    public Question (String json) {
+        JSONObject jsonObject = SAJsonParser.newObject(json);
         readFromJson(jsonObject);
     }
 
-    public Question (String json) {
-        JSONObject jsonObject = SAJsonParser.newObject(json);
+    public Question (JSONObject jsonObject) {
         readFromJson(jsonObject);
     }
 
@@ -49,6 +50,7 @@ public class Question extends SABaseObject {
         question.title = context.getString(R.string.data_question_morning_1);
         question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_morning_1_answer_1)));
         question.possibleAnswers.add(Answer.negativeAnswer(context.getString(R.string.data_question_morning_1_answer_2)));
+        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
         return question;
     }
 
@@ -58,6 +60,7 @@ public class Question extends SABaseObject {
         question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_morning_2_answer_1)));
         question.possibleAnswers.add(Answer.neutralAnswer(context.getString(R.string.data_question_morning_2_answer_2)));
         question.possibleAnswers.add(Answer.negativeAnswer(context.getString(R.string.data_question_morning_2_answer_3)));
+        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
         return question;
     }
 
@@ -67,6 +70,7 @@ public class Question extends SABaseObject {
         question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_morning_3_answer_1)));
         question.possibleAnswers.add(Answer.neutralAnswer(context.getString(R.string.data_question_morning_3_answer_2)));
         question.possibleAnswers.add(Answer.negativeAnswer(context.getString(R.string.data_question_morning_3_answer_3)));
+        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
         return question;
     }
 
@@ -76,6 +80,7 @@ public class Question extends SABaseObject {
         question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_evening_1_answer_1)));
         question.possibleAnswers.add(Answer.neutralAnswer(context.getString(R.string.data_question_evening_1_answer_2)));
         question.possibleAnswers.add(Answer.negativeAnswer(context.getString(R.string.data_question_evening_1_answer_3)));
+        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
         return question;
     }
 
@@ -84,6 +89,7 @@ public class Question extends SABaseObject {
         question.title = context.getString(R.string.data_question_evening_2);
         question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_evening_2_answer_1)));
         question.possibleAnswers.add(Answer.negativeAnswer(context.getString(R.string.data_question_evening_2_answer_2)));
+        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
         return question;
     }
 
@@ -94,6 +100,7 @@ public class Question extends SABaseObject {
         question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_evening_3_answer_2)));
         question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_evening_3_answer_3)));
         question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_evening_3_answer_4)));
+        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
         return question;
     }
 
@@ -102,6 +109,7 @@ public class Question extends SABaseObject {
         question.title = context.getString(R.string.data_question_evening_4);
         question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_evening_4_answer_1)));
         question.possibleAnswers.add(Answer.negativeAnswer(context.getString(R.string.data_question_evening_4_answer_2)));
+        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
         return question;
     }
 
@@ -114,7 +122,6 @@ public class Question extends SABaseObject {
                 return new Answer(jsonObject);
             }
         });
-
     }
 
     @Override

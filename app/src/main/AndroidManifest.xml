@@ -15,6 +15,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.AnswerActivity"/>
+        <activity android:name=".activities.JournalActivity"/>
 
         <receiver android:name=".system.alarm.AlarmReceiver">
             <intent-filter>

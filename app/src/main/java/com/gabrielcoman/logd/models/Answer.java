@@ -11,31 +11,11 @@ import tv.superawesome.lib.sajsonparser.SAJsonParser;
 
 public class Answer extends SABaseObject {
 
-    public enum AnswerValue {
-        NEGATIVE(0),
-        NEUTRAL(1),
-        POSITIVE(2);
-
-        private final int value;
-
-        AnswerValue(int i) {
-            this.value = i;
-        }
-
-        public static AnswerValue fromValue (int value) {
-            return value == 2 ? POSITIVE : value == 1 ? NEUTRAL : NEGATIVE;
-        }
-    }
-
-    private String name;
-    private AnswerValue value;
+    private double value = 0.0;
+    protected String title = null;
+    protected String text = null;
 
     public Answer () {
-        // do nothing
-    }
-
-    public Answer (JSONObject json) {
-        readFromJson(json);
     }
 
     public Answer (String json) {
@@ -43,46 +23,66 @@ public class Answer extends SABaseObject {
         readFromJson(jsonObject);
     }
 
-    public String getName() {
-        return name;
+    public Answer (JSONObject jsonObject) {
+        readFromJson(jsonObject);
     }
 
-    public AnswerValue getValue() {
+    public String getTitle() {
+        return title;
+    }
+
+    public double getValue() {
         return value;
     }
 
-    public static Answer positiveAnswer (String name) {
+    public String getText() {
+        return text;
+    }
+
+    public void updateText (String text) {
+        this.title = text;
+    }
+
+    public static Answer journalAnswer (String title) {
         Answer answer = new Answer();
-        answer.name = name;
-        answer.value = AnswerValue.POSITIVE;
+        answer.title = title;
         return answer;
     }
 
-    public static Answer neutralAnswer (String name) {
+    public static Answer positiveAnswer (String title) {
         Answer answer = new Answer();
-        answer.name = name;
-        answer.value = AnswerValue.NEUTRAL;
+        answer.title = title;
+        answer.value = 1.0;
         return answer;
     }
 
-    public static Answer negativeAnswer (String name) {
+    public static Answer neutralAnswer (String title) {
         Answer answer = new Answer();
-        answer.name = name;
-        answer.value = AnswerValue.NEGATIVE;
+        answer.title = title;
+        answer.value = 0.5;
+        return answer;
+    }
+
+    public static Answer negativeAnswer (String title) {
+        Answer answer = new Answer();
+        answer.title = title;
+        answer.value = 0.0;
         return answer;
     }
 
     @Override
     public void readFromJson(JSONObject json) {
-        name = SAJsonParser.getString(json, "name");
-        value = AnswerValue.fromValue(SAJsonParser.getInt(json, "value"));
+        title = SAJsonParser.getString(json, "title");
+        text = SAJsonParser.getString(json, "text");
+        value = SAJsonParser.getDouble(json, "value");
     }
 
     @Override
     public JSONObject writeToJson() {
         return SAJsonParser.newObject(new Object[] {
-                "name", name,
-                "value", value.ordinal()
+                "title", title,
+                "text", text,
+                "value", value
         });
     }
 }

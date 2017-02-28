@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context="com.gabrielcoman.logd.activities.JournalActivity">
+
+    <Button
+        android:id="@+id/JournalOK"
+        android:text="@string/activity_journal_next"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_width="100dp"
+        android:layout_height="50dp"/>
+    <EditText
+        android:id="@+id/JournalText"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="6"
+        android:gravity="top|start"
+        android:maxLines="10"
+        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

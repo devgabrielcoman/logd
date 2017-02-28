@@ -34,7 +34,11 @@
     <string name="data_question_evening_4_answer_1">Yes</string>
     <string name="data_question_evening_4_answer_2">No</string>
 
+    <string name="data_question_general_answer_journal">Write to journal</string>
+
     <string name="notification_ticker_title">New message from Logd</string>
     <string name="notification_title">Logd question</string>
+
+    <string name="activity_journal_next">Submit</string>
 
 </resources>

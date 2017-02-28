@@ -4,16 +4,20 @@
  */
 package com.gabrielcoman.logd.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.gabrielcoman.logd.R;
-import com.gabrielcoman.logd.models.Answer;
-import com.gabrielcoman.logd.models.Question;
+import com.gabrielcoman.logd.models.Response;
+import com.gabrielcoman.logd.rxdatasource.RxDataSource;
 import com.gabrielcoman.logd.system.alarm.AlarmScheduler;
+import com.gabrielcoman.logd.system.database.DatabaseManager;
 import com.jakewharton.rxbinding.view.RxView;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +32,22 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(aVoid -> {
                     AlarmScheduler.scheduleAlarm(MainActivity.this);
                 });
+
+        ListView history = (ListView) findViewById(R.id.History);
+
+        List<Response> responses = DatabaseManager.getFromDatabase(this);
+
+        RxDataSource.from(MainActivity.this, responses)
+                .bindTo(history)
+                .customiseRow(R.layout.row_history, Response.class, (response, view) -> {
+
+                    TextView dateTextView = (TextView) view.findViewById(R.id.ResponseDate);
+                    dateTextView.setText(response.getDate());
+
+                    TextView textTextView = (TextView) view.findViewById(R.id.ResponseText);
+                    textTextView.setText(response.getAnswer().getTitle());
+                })
+                .update();
 
     }
 }
