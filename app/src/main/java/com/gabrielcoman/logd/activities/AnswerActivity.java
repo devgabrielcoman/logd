@@ -7,7 +7,6 @@ package com.gabrielcoman.logd.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,10 +14,13 @@ import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.models.Answer;
 import com.gabrielcoman.logd.models.Question;
 import com.gabrielcoman.logd.models.Response;
-import com.gabrielcoman.logd.rxdatasource.RxDataSource;
 import com.gabrielcoman.logd.system.database.DatabaseManager;
+import com.gabrielcoman.logd.system.network.SentimentAnalysis;
 
 import java.util.List;
+
+import gabrielcoman.com.rxdatasource.RxDataSource;
+import rx.functions.Action1;
 
 public class AnswerActivity extends Activity {
 
@@ -49,12 +51,17 @@ public class AnswerActivity extends Activity {
 
                         if (index < possibleAnswers.size() - 1) {
 
-                            Response response = new Response(answer);
+                            SentimentAnalysis
+                                    .analyseSentiment(answer.getTitle())
+                                    .subscribe(value -> {
 
-                            DatabaseManager.writeToDatabase(AnswerActivity.this, response);
+                                        Answer finalAnswer = Answer.responseAnswer(answer.getTitle(), value);
+                                        Response response = new Response(finalAnswer);
+                                        DatabaseManager.writeToDatabase(AnswerActivity.this, response);
 
-                            Intent mainIntent = new Intent(AnswerActivity.this, MainActivity.class);
-                            AnswerActivity.this.startActivity(mainIntent);
+                                        Intent mainIntent = new Intent(AnswerActivity.this, MainActivity.class);
+                                        AnswerActivity.this.startActivity(mainIntent);
+                                    });
 
                         } else {
                             Intent mainIntent = new Intent(AnswerActivity.this, JournalActivity.class);

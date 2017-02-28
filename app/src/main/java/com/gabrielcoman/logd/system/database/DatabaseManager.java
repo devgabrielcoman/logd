@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import com.gabrielcoman.logd.models.Response;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DatabaseManager {
@@ -49,6 +51,12 @@ public class DatabaseManager {
         } catch (Exception e) {
             // do nothing
         }
+
+        Collections.sort(responses, (o1, o2) -> {
+            if (o1.getTimestamp() > o2.getTimestamp()) return -1;
+            if (o1.getTimestamp() < o2.getTimestamp()) return 1;
+            return 0;
+        });
 
         return responses;
 

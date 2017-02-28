@@ -10,6 +10,7 @@ import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.models.Answer;
 import com.gabrielcoman.logd.models.Response;
 import com.gabrielcoman.logd.system.database.DatabaseManager;
+import com.gabrielcoman.logd.system.network.SentimentAnalysis;
 import com.jakewharton.rxbinding.view.RxView;
 
 public class JournalActivity extends Activity {
@@ -25,13 +26,19 @@ public class JournalActivity extends Activity {
         RxView.clicks(next)
                 .subscribe(aVoid -> {
 
-                    String text = journalText.getText().toString();
-                    Answer answer = Answer.journalAnswer(text);
-                    Response response = new Response(answer);
-                    DatabaseManager.writeToDatabase(JournalActivity.this, response);
+                    final String text = journalText.getText().toString();
 
-                    Intent mainIntent = new Intent(JournalActivity.this, MainActivity.class);
-                    JournalActivity.this.startActivity(mainIntent);
+                    SentimentAnalysis.analyseSentiment(text)
+                            .subscribe(sentiment -> {
+
+                                Answer answer = Answer.responseAnswer(text, sentiment);
+                                Response response = new Response(answer);
+                                DatabaseManager.writeToDatabase(JournalActivity.this, response);
+
+                                Intent mainIntent = new Intent(JournalActivity.this, MainActivity.class);
+                                JournalActivity.this.startActivity(mainIntent);
+
+                            });
 
                 });
     }

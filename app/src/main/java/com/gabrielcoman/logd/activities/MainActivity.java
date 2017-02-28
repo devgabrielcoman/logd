@@ -12,12 +12,13 @@ import android.widget.TextView;
 
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.models.Response;
-import com.gabrielcoman.logd.rxdatasource.RxDataSource;
 import com.gabrielcoman.logd.system.alarm.AlarmScheduler;
 import com.gabrielcoman.logd.system.database.DatabaseManager;
 import com.jakewharton.rxbinding.view.RxView;
 
 import java.util.List;
+
+import gabrielcoman.com.rxdatasource.RxDataSource;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
                 .bindTo(history)
                 .customiseRow(R.layout.row_history, Response.class, (response, view) -> {
 
+                    TextView sentimentTextView = (TextView) view.findViewById(R.id.ResponseSentiment);
+                    sentimentTextView.setText("" + response.getAnswer().getValue());
+
                     TextView dateTextView = (TextView) view.findViewById(R.id.ResponseDate);
                     dateTextView.setText(response.getDate());
 
@@ -48,6 +52,5 @@ public class MainActivity extends AppCompatActivity {
                     textTextView.setText(response.getAnswer().getTitle());
                 })
                 .update();
-
     }
 }

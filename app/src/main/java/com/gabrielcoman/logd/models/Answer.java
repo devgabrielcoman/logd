@@ -43,6 +43,13 @@ public class Answer extends SABaseObject {
         this.title = text;
     }
 
+    public static Answer responseAnswer (String title, double value) {
+        Answer answer = new Answer();
+        answer.title = title;
+        answer.value = value;
+        return answer;
+    }
+
     public static Answer journalAnswer (String title) {
         Answer answer = new Answer();
         answer.title = title;
@@ -59,14 +66,14 @@ public class Answer extends SABaseObject {
     public static Answer neutralAnswer (String title) {
         Answer answer = new Answer();
         answer.title = title;
-        answer.value = 0.5;
+        answer.value = 0.0;
         return answer;
     }
 
     public static Answer negativeAnswer (String title) {
         Answer answer = new Answer();
         answer.title = title;
-        answer.value = 0.0;
+        answer.value = -1.0;
         return answer;
     }
 
