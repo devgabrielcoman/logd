@@ -7,6 +7,7 @@ package com.gabrielcoman.logd.system.database;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.gabrielcoman.logd.models.Question;
 import com.gabrielcoman.logd.models.Response;
 
 import java.util.ArrayList;
@@ -14,26 +15,26 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class DatabaseManager {
+public class DatabaseResponsesManager {
 
     // constants for the shared preferences file title and key
-    private static final String FILE_NAME   = "LOGD_DATA_KEY";
-    private static final String KEY_PREFIX  = "KEY_";
+    private static final String FILE_NAME       = "LOGD_DATA_KEY";
+    private static final String KEY_PREFIX      = "KEY_";
 
-    public static void writeToDatabase (Context context, Response response) {
+    public static void writeResponse (Context context, Response response) {
 
         try {
             context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
                     .edit()
                     .putString(KEY_PREFIX + response.getTimestamp(), response.writeToJson().toString())
-                    .apply();;
+                    .apply();
         } catch (Exception e) {
             // do nothing
         }
 
     }
 
-    public static List<Response> getFromDatabase (Context context) {
+    public static List<Response> getResponses (Context context) {
 
         List<Response> responses = new ArrayList<>();
 
@@ -61,5 +62,6 @@ public class DatabaseManager {
         return responses;
 
     }
+
 
 }

@@ -4,8 +4,6 @@
  */
 package com.gabrielcoman.logd.models;
 
-import android.os.Parcel;
-
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -20,10 +18,11 @@ import tv.superawesome.lib.sajsonparser.SAJsonParser;
 public class Response extends SABaseObject {
 
     private long timestamp;
-    private Answer answer;
+    private String answer;
+    private double value;
 
     public Response () {
-
+        // do nothing
     }
 
     public Response (String json) {
@@ -35,17 +34,17 @@ public class Response extends SABaseObject {
         readFromJson(jsonObject);
     }
 
-    public Response (Answer answer) {
+    public Response (String answer, double value) {
         this.answer = answer;
+        this.value = value;
         this.timestamp = System.currentTimeMillis()/1000;
     }
-
 
     public long getTimestamp() {
         return timestamp;
     }
 
-    public Answer getAnswer() {
+    public String getAnswer() {
         return answer;
     }
 
@@ -60,15 +59,20 @@ public class Response extends SABaseObject {
     @Override
     public void readFromJson(JSONObject json) {
         timestamp = SAJsonParser.getLong(json, "timestamp");
-        JSONObject answerObj = SAJsonParser.getJsonObject(json, "answer");
-        answer = new Answer(answerObj);
+        answer = SAJsonParser.getString(json, "answer");
+        value = SAJsonParser.getDouble(json, "value");
     }
 
     @Override
     public JSONObject writeToJson() {
         return SAJsonParser.newObject(new Object[] {
                 "timestamp", timestamp,
-                "answer", answer.writeToJson()
+                "answer", answer,
+                "value", value
         });
+    }
+
+    public double getValue() {
+        return value;
     }
 }

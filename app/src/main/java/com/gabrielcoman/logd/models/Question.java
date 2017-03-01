@@ -12,7 +12,9 @@ import org.json.JSONObject;
 import org.xml.sax.SAXNotRecognizedException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 import tv.superawesome.lib.sajsonparser.SABaseObject;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
@@ -22,7 +24,7 @@ import tv.superawesome.lib.sajsonparser.SAListToJson;
 public class Question extends SABaseObject {
 
     private String title;
-    private List<Answer> possibleAnswers = new ArrayList<>();
+    private List<String> possibleAnswers = new ArrayList<>();
 
     public Question () {
         // do nothing
@@ -41,85 +43,93 @@ public class Question extends SABaseObject {
         return title;
     }
 
-    public List<Answer> getPossibleAnswers() {
+    public List<String> getPossibleAnswers() {
         return possibleAnswers;
     }
 
     public static Question morningQuestion1 (Context context) {
         Question question = new Question();
         question.title = context.getString(R.string.data_question_morning_1);
-        question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_morning_1_answer_1)));
-        question.possibleAnswers.add(Answer.negativeAnswer(context.getString(R.string.data_question_morning_1_answer_2)));
-        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
+        question.possibleAnswers = Arrays.asList(
+                context.getString(R.string.data_question_morning_1_answer_1),
+                context.getString(R.string.data_question_morning_1_answer_2),
+                context.getString(R.string.data_question_general_answer_journal));
         return question;
     }
 
     public static Question morningQuestion2 (Context context) {
         Question question = new Question();
         question.title = context.getString(R.string.data_question_morning_2);
-        question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_morning_2_answer_1)));
-        question.possibleAnswers.add(Answer.neutralAnswer(context.getString(R.string.data_question_morning_2_answer_2)));
-        question.possibleAnswers.add(Answer.negativeAnswer(context.getString(R.string.data_question_morning_2_answer_3)));
-        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
+        question.possibleAnswers = Arrays.asList(
+                context.getString(R.string.data_question_morning_2_answer_1),
+                context.getString(R.string.data_question_morning_2_answer_2),
+                context.getString(R.string.data_question_morning_2_answer_3),
+                context.getString(R.string.data_question_general_answer_journal));
         return question;
     }
 
     public static Question morningQuestion3 (Context context) {
         Question question = new Question();
         question.title = context.getString(R.string.data_question_morning_3);
-        question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_morning_3_answer_1)));
-        question.possibleAnswers.add(Answer.neutralAnswer(context.getString(R.string.data_question_morning_3_answer_2)));
-        question.possibleAnswers.add(Answer.negativeAnswer(context.getString(R.string.data_question_morning_3_answer_3)));
-        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
+        question.possibleAnswers = Arrays.asList(
+                context.getString(R.string.data_question_morning_3_answer_1),
+                context.getString(R.string.data_question_morning_3_answer_2),
+                context.getString(R.string.data_question_morning_3_answer_3),
+                context.getString(R.string.data_question_general_answer_journal));
         return question;
     }
 
     public static Question eveningQuestion1 (Context context) {
         Question question = new Question();
         question.title = context.getString(R.string.data_question_evening_1);
-        question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_evening_1_answer_1)));
-        question.possibleAnswers.add(Answer.neutralAnswer(context.getString(R.string.data_question_evening_1_answer_2)));
-        question.possibleAnswers.add(Answer.negativeAnswer(context.getString(R.string.data_question_evening_1_answer_3)));
-        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
+        question.possibleAnswers = Arrays.asList(
+                context.getString(R.string.data_question_evening_1_answer_1),
+                context.getString(R.string.data_question_evening_1_answer_2),
+                context.getString(R.string.data_question_evening_1_answer_3),
+                context.getString(R.string.data_question_general_answer_journal));
         return question;
     }
 
     public static Question eveningQuestion2 (Context context) {
         Question question = new Question();
         question.title = context.getString(R.string.data_question_evening_2);
-        question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_evening_2_answer_1)));
-        question.possibleAnswers.add(Answer.negativeAnswer(context.getString(R.string.data_question_evening_2_answer_2)));
-        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
+        question.possibleAnswers = Arrays.asList(
+                context.getString(R.string.data_question_evening_2_answer_1),
+                context.getString(R.string.data_question_evening_2_answer_2),
+                context.getString(R.string.data_question_general_answer_journal));
         return question;
     }
 
     public static Question eveningQuestion3 (Context context) {
         Question question = new Question();
         question.title = context.getString(R.string.data_question_evening_3);
-        question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_evening_3_answer_1)));
-        question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_evening_3_answer_2)));
-        question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_evening_3_answer_3)));
-        question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_evening_3_answer_4)));
-        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
+
+        question.possibleAnswers = Arrays.asList(
+                context.getString(R.string.data_question_evening_3_answer_1),
+                context.getString(R.string.data_question_evening_3_answer_2),
+                context.getString(R.string.data_question_evening_3_answer_3),
+                context.getString(R.string.data_question_evening_3_answer_4),
+                context.getString(R.string.data_question_general_answer_journal));
         return question;
     }
 
     public static Question eveningQuestion4 (Context context) {
         Question question = new Question();
         question.title = context.getString(R.string.data_question_evening_4);
-        question.possibleAnswers.add(Answer.positiveAnswer(context.getString(R.string.data_question_evening_4_answer_1)));
-        question.possibleAnswers.add(Answer.negativeAnswer(context.getString(R.string.data_question_evening_4_answer_2)));
-        question.possibleAnswers.add(Answer.journalAnswer(context.getString(R.string.data_question_general_answer_journal)));
+        question.possibleAnswers = Arrays.asList(
+                context.getString(R.string.data_question_evening_4_answer_1),
+                context.getString(R.string.data_question_evening_4_answer_2),
+                context.getString(R.string.data_question_general_answer_journal));
         return question;
     }
 
     @Override
     public void readFromJson(JSONObject json) {
         title = SAJsonParser.getString(json, "title");
-        possibleAnswers = SAJsonParser.getListFromJsonArray(json, "possibleAnswers", new SAJsonToList<Answer, JSONObject>() {
+        possibleAnswers = SAJsonParser.getListFromJsonArray(json, "possibleAnswers", new SAJsonToList<String, String>() {
             @Override
-            public Answer traverseItem(JSONObject jsonObject) {
-                return new Answer(jsonObject);
+            public String traverseItem(String jsonObject) {
+                return jsonObject;
             }
         });
     }
@@ -128,7 +138,7 @@ public class Question extends SABaseObject {
     public JSONObject writeToJson() {
         return SAJsonParser.newObject(new Object[] {
                 "title", title,
-                "possibleAnswers", SAJsonParser.getJsonArrayFromList(possibleAnswers, Answer::writeToJson)
+                "possibleAnswers", SAJsonParser.getJsonArrayFromList(possibleAnswers, s -> s)
         });
     }
 }

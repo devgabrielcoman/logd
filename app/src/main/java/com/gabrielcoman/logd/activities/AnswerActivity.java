@@ -11,16 +11,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.gabrielcoman.logd.R;
-import com.gabrielcoman.logd.models.Answer;
 import com.gabrielcoman.logd.models.Question;
 import com.gabrielcoman.logd.models.Response;
-import com.gabrielcoman.logd.system.database.DatabaseManager;
-import com.gabrielcoman.logd.system.network.SentimentAnalysis;
+import com.gabrielcoman.logd.system.api.SentimentAnalysis;
+import com.gabrielcoman.logd.system.database.DatabaseResponsesManager;
 
 import java.util.List;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
-import rx.functions.Action1;
 
 public class AnswerActivity extends Activity {
 
@@ -37,14 +35,14 @@ public class AnswerActivity extends Activity {
 
             ListView listView = (ListView) findViewById(R.id.AnswersList);
 
-            List<Answer> possibleAnswers = question.getPossibleAnswers();
+            List<String> possibleAnswers = question.getPossibleAnswers();
 
             RxDataSource.from(AnswerActivity.this, possibleAnswers)
                     .bindTo(listView)
-                    .customiseRow(R.layout.row_answer, Answer.class, (answer, view) -> {
+                    .customiseRow(R.layout.row_answer, String.class, (answer, view) -> {
 
                         TextView answerText = (TextView) view.findViewById(R.id.AnswerText);
-                        answerText.setText(answer.getTitle());
+                        answerText.setText(answer);
 
                     })
                     .onRowClick(R.layout.row_answer, (index, answer) -> {
@@ -52,12 +50,11 @@ public class AnswerActivity extends Activity {
                         if (index < possibleAnswers.size() - 1) {
 
                             SentimentAnalysis
-                                    .analyseSentiment(answer.getTitle())
+                                    .analyseSentiment(answer)
                                     .subscribe(value -> {
 
-                                        Answer finalAnswer = Answer.responseAnswer(answer.getTitle(), value);
-                                        Response response = new Response(finalAnswer);
-                                        DatabaseManager.writeToDatabase(AnswerActivity.this, response);
+                                        Response response = new Response(answer, value);
+                                        DatabaseResponsesManager.writeResponse(AnswerActivity.this, response);
 
                                         Intent mainIntent = new Intent(AnswerActivity.this, MainActivity.class);
                                         AnswerActivity.this.startActivity(mainIntent);

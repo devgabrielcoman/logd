@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.models.Response;
 import com.gabrielcoman.logd.system.alarm.AlarmScheduler;
-import com.gabrielcoman.logd.system.database.DatabaseManager;
+import com.gabrielcoman.logd.system.database.DatabaseResponsesManager;
 import com.jakewharton.rxbinding.view.RxView;
 
 import java.util.List;
@@ -36,20 +36,20 @@ public class MainActivity extends AppCompatActivity {
 
         ListView history = (ListView) findViewById(R.id.History);
 
-        List<Response> responses = DatabaseManager.getFromDatabase(this);
+        List<Response> responses = DatabaseResponsesManager.getResponses(this);
 
         RxDataSource.from(MainActivity.this, responses)
                 .bindTo(history)
                 .customiseRow(R.layout.row_history, Response.class, (response, view) -> {
 
                     TextView sentimentTextView = (TextView) view.findViewById(R.id.ResponseSentiment);
-                    sentimentTextView.setText("" + response.getAnswer().getValue());
+                    sentimentTextView.setText("" + response.getValue());
 
                     TextView dateTextView = (TextView) view.findViewById(R.id.ResponseDate);
                     dateTextView.setText(response.getDate());
 
                     TextView textTextView = (TextView) view.findViewById(R.id.ResponseText);
-                    textTextView.setText(response.getAnswer().getTitle());
+                    textTextView.setText(response.getAnswer());
                 })
                 .update();
     }
