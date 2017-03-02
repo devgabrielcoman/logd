@@ -8,8 +8,8 @@ import android.widget.EditText;
 
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.models.Response;
-import com.gabrielcoman.logd.system.api.SentimentAnalysis;
-import com.gabrielcoman.logd.system.database.DatabaseResponsesManager;
+import com.gabrielcoman.logd.system.api.DatabaseAPI;
+import com.gabrielcoman.logd.system.api.SentimentAPI;
 import com.jakewharton.rxbinding.view.RxView;
 
 public class JournalActivity extends Activity {
@@ -27,11 +27,11 @@ public class JournalActivity extends Activity {
 
                     final String text = journalText.getText().toString();
 
-                    SentimentAnalysis.analyseSentiment(text)
+                    SentimentAPI.analyseSentiment(text)
                             .subscribe(sentiment -> {
 
                                 Response response = new Response(text, sentiment);
-                                DatabaseResponsesManager.writeResponse(JournalActivity.this, response);
+                                DatabaseAPI.writeResponse(JournalActivity.this, response);
 
                                 Intent mainIntent = new Intent(JournalActivity.this, MainActivity.class);
                                 JournalActivity.this.startActivity(mainIntent);

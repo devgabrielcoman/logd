@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/logd.iml" filepath="$PROJECT_DIR$/logd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/logddatabase/logddatabase.iml" filepath="$PROJECT_DIR$/logddatabase/logddatabase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/logdnetwork/logdnetwork.iml" filepath="$PROJECT_DIR$/logdnetwork/logdnetwork.iml" />
     </modules>
   </component>
 </project>

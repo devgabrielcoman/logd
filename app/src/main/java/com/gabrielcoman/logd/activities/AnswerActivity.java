@@ -13,8 +13,8 @@ import android.widget.TextView;
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.models.Question;
 import com.gabrielcoman.logd.models.Response;
-import com.gabrielcoman.logd.system.api.SentimentAnalysis;
-import com.gabrielcoman.logd.system.database.DatabaseResponsesManager;
+import com.gabrielcoman.logd.system.api.DatabaseAPI;
+import com.gabrielcoman.logd.system.api.SentimentAPI;
 
 import java.util.List;
 
@@ -49,12 +49,12 @@ public class AnswerActivity extends Activity {
 
                         if (index < possibleAnswers.size() - 1) {
 
-                            SentimentAnalysis
+                            SentimentAPI
                                     .analyseSentiment(answer)
                                     .subscribe(value -> {
 
                                         Response response = new Response(answer, value);
-                                        DatabaseResponsesManager.writeResponse(AnswerActivity.this, response);
+                                        DatabaseAPI.writeResponse(AnswerActivity.this, response);
 
                                         Intent mainIntent = new Intent(AnswerActivity.this, MainActivity.class);
                                         AnswerActivity.this.startActivity(mainIntent);

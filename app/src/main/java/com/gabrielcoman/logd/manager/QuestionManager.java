@@ -13,10 +13,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import rx.Observable;
+import rx.Subscriber;
+
 public class QuestionManager {
 
-    public static List<Question> getPossibleQuestions (Context context) {
-        return Arrays.asList(
+    public static Observable<Question> getPossibleQuestions (Context context) {
+
+        List<Question> questions = Arrays.asList(
                 Question.morningQuestion1(context),
                 Question.morningQuestion2(context),
                 Question.morningQuestion3(context),
@@ -25,6 +29,15 @@ public class QuestionManager {
                 Question.eveningQuestion3(context),
                 Question.eveningQuestion4(context)
         );
+
+        return Observable.create(subscriber -> {
+
+            for (Question q : questions) {
+                subscriber.onNext(q);
+            }
+            subscriber.onCompleted();
+
+        });
     }
 
     public static Question pickFromList (List<Question> questions) {

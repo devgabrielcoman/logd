@@ -1,4 +1,4 @@
-package com.gabrielcoman.logd.system.network;
+package com.gabrielcoman.logdnetwork;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,6 +11,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import rx.Observable;
+import rx.Subscriber;
 
 public class Network {
 
@@ -29,21 +30,23 @@ public class Network {
                 .post(formBody)
                 .build();
 
-        return Observable.create(subscriber -> {
+        return Observable.create(new Observable.OnSubscribe<Response>() {
+            @Override
+            public void call(Subscriber<? super Response> subscriber) {
 
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    subscriber.onError(new Throwable());
-                }
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        subscriber.onError(new Throwable());
+                    }
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    subscriber.onNext(response);
-                    subscriber.onCompleted();
-                }
-            });
-
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        subscriber.onNext(response);
+                        subscriber.onCompleted();
+                    }
+                });
+            }
         });
 
     }

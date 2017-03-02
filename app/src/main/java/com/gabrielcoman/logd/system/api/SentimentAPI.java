@@ -1,14 +1,14 @@
 package com.gabrielcoman.logd.system.api;
 
 import com.gabrielcoman.logd.models.Sentiment;
-import com.gabrielcoman.logd.system.network.Network;
+import com.gabrielcoman.logdnetwork.Network;
 
 import java.io.IOException;
 import java.util.HashMap;
 
 import rx.Observable;
 
-public class SentimentAnalysis {
+public class SentimentAPI {
 
     public static Observable<Double> analyseSentiment (String text) {
 

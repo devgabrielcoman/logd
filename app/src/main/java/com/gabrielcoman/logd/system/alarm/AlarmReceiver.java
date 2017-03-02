@@ -10,59 +10,53 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.os.ParcelableCompat;
+import android.util.Log;
 
 import com.gabrielcoman.logd.activities.AnswerActivity;
 import com.gabrielcoman.logd.manager.QuestionManager;
 import com.gabrielcoman.logd.models.Question;
-import com.gabrielcoman.logd.system.database.DatabaseQuestionsManager;
+import com.gabrielcoman.logd.system.api.DatabaseAPI;
 import com.gabrielcoman.logd.system.notification.NotificationCreator;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        // get all the questions in the system
-        List<Question> questions = QuestionManager.getPossibleQuestions(context);
+        int previousQuestionHash = DatabaseAPI.getPreviousQuestion(context);
 
-        // if it exists, get the previously question that's been posed to the user
-        Question previousQuestion = DatabaseQuestionsManager.getPreviousQuestion(context);
-        // if not null, remove that from the "questions" list
-        if (previousQuestion != null) {
-            questions.remove(previousQuestion);
-        }
+        QuestionManager.getPossibleQuestions(context)
+                .filter(question -> question.hashCode() != previousQuestionHash)
+                .toList()
+                .subscribe(questions -> {
 
-        // get the current question from the reduced (or initial) list
-        Question currentQuestion = QuestionManager.pickFromList(questions);
+                    // pick a random question from the list
+                    Question pickedQuestion = QuestionManager.pickFromList(questions);
 
-        // save the current question as a previous
-        DatabaseQuestionsManager.writeQuestionToPreviousDatabase(context, currentQuestion);
+                    Log.d("Logd-App", "Got " + questions.size() + " questions in the end (without " + previousQuestionHash + "). Picked question " + pickedQuestion.getTitle() + " with hash " + pickedQuestion.hashCode());
 
-        // form intent
-        Intent notificationIntent = new Intent(context, AnswerActivity.class);
-        notificationIntent.putExtra("question", currentQuestion.writeToJson().toString());
+                    // update the database
+                    DatabaseAPI.writeQuestion(context, pickedQuestion);
 
-        // create the stack w/ the notification intents
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addParentStack(AnswerActivity.class);
-        stackBuilder.addNextIntent(notificationIntent);
+                    // form intent
+                    Intent notificationIntent = new Intent(context, AnswerActivity.class);
+                    notificationIntent.putExtra("question", pickedQuestion.writeToJson().toString());
 
-        // form pending intent
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                    // create the stack w/ the notification intents
+                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                    stackBuilder.addParentStack(AnswerActivity.class);
+                    stackBuilder.addNextIntent(notificationIntent);
 
-        // create notification
-        Notification notification = NotificationCreator.createNotification(context, currentQuestion.getTitle(), pendingIntent);
+                    // form pending intent
+                    PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // start notification
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
+                    // create notification
+                    Notification notification = NotificationCreator.createNotification(context, pickedQuestion.getTitle(), pendingIntent);
 
+                    // start notification
+                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(0, notification);
+                });
     }
 }

@@ -141,4 +141,9 @@ public class Question extends SABaseObject {
                 "possibleAnswers", SAJsonParser.getJsonArrayFromList(possibleAnswers, s -> s)
         });
     }
+
+    @Override
+    public int hashCode() {
+        return title.hashCode();
+    }
 }

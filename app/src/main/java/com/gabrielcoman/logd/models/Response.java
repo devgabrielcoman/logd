@@ -15,7 +15,7 @@ import java.util.TimeZone;
 import tv.superawesome.lib.sajsonparser.SABaseObject;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 
-public class Response extends SABaseObject {
+public class Response extends SABaseObject implements Comparable {
 
     private long timestamp;
     private String answer;
@@ -74,5 +74,13 @@ public class Response extends SABaseObject {
 
     public double getValue() {
         return value;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Response r = (Response) o;
+        if (timestamp > r.getTimestamp()) return -1;
+        if (timestamp < r.getTimestamp()) return 1;
+        return 0;
     }
 }
