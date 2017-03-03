@@ -3,21 +3,17 @@ package com.gabrielcoman.logddatabase;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.json.JSONObject;
+import com.google.gson.Gson;
 
-import java.lang.reflect.Constructor;
 import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
-import tv.superawesome.lib.sajsonparser.SAJsonSerializable;
 
 public class Database {
 
     public static final String     DB_RESPONSE  = "RESPONSE_DB";
     public static final String     DB_QUESTION  = "QUESTION_DB";
-
-    private static final String     ENTRY_PREFIX = "ENTRY_";
 
     public static <T> void writeItem (Context context, String database, String key, T item) {
 
@@ -36,8 +32,9 @@ public class Database {
                 editor.putLong(key, (Long) item);
             } else if (item instanceof String) {
                 editor.putString(key, (String) item);
-            } else if (item instanceof SAJsonSerializable) {
-                editor.putString(key, ((SAJsonSerializable) item).writeToJson().toString());
+            } else if (item != null && item instanceof Object) {
+                String json = new Gson().toJson(item);
+                editor.putString(key, json);
             }
 
             editor.apply();
@@ -97,14 +94,7 @@ public class Database {
     public static <T> T getModel (Context context, String database, String key, Class<T> cl) {
         try {
             String json = getString(context, database, key);
-            JSONObject jsonObject = new JSONObject(json);
-
-            Constructor<?> constructor = cl.getConstructor();
-            T instance = (T) constructor.newInstance();
-            java.lang.reflect.Method method = cl.getMethod("readFromJson", JSONObject.class);
-            method.invoke(instance, jsonObject);
-
-            return instance;
+            return new Gson().fromJson(json, cl);
         } catch (Exception e) {
             return null;
         }

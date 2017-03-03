@@ -1,7 +1,5 @@
 package com.gabrielcoman.logd.activities;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +10,7 @@ import com.gabrielcoman.logd.system.api.DatabaseAPI;
 import com.gabrielcoman.logd.system.api.SentimentAPI;
 import com.jakewharton.rxbinding.view.RxView;
 
-public class JournalActivity extends Activity {
+public class JournalActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,9 +30,7 @@ public class JournalActivity extends Activity {
 
                                 Response response = new Response(text, sentiment);
                                 DatabaseAPI.writeResponse(JournalActivity.this, response);
-
-                                Intent mainIntent = new Intent(JournalActivity.this, MainActivity.class);
-                                JournalActivity.this.startActivity(mainIntent);
+                                finishOK();
 
                             });
 

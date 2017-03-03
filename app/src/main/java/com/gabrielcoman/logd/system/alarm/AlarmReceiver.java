@@ -13,11 +13,12 @@ import android.content.Intent;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import com.gabrielcoman.logd.activities.AnswerActivity;
-import com.gabrielcoman.logd.manager.QuestionManager;
+import com.gabrielcoman.logd.activities.MainActivity;
 import com.gabrielcoman.logd.models.Question;
 import com.gabrielcoman.logd.system.api.DatabaseAPI;
+import com.gabrielcoman.logd.system.api.QuestionsAPI;
 import com.gabrielcoman.logd.system.notification.NotificationCreator;
+import com.google.gson.Gson;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -26,13 +27,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         int previousQuestionHash = DatabaseAPI.getPreviousQuestion(context);
 
-        QuestionManager.getPossibleQuestions(context)
+        QuestionsAPI.getPossibleQuestions(context)
                 .filter(question -> question.hashCode() != previousQuestionHash)
                 .toList()
                 .subscribe(questions -> {
 
                     // pick a random question from the list
-                    Question pickedQuestion = QuestionManager.pickFromList(questions);
+                    Question pickedQuestion = QuestionsAPI.pickFromList(questions);
 
                     Log.d("Logd-App", "Got " + questions.size() + " questions in the end (without " + previousQuestionHash + "). Picked question " + pickedQuestion.getTitle() + " with hash " + pickedQuestion.hashCode());
 
@@ -40,12 +41,12 @@ public class AlarmReceiver extends BroadcastReceiver {
                     DatabaseAPI.writeQuestion(context, pickedQuestion);
 
                     // form intent
-                    Intent notificationIntent = new Intent(context, AnswerActivity.class);
-                    notificationIntent.putExtra("question", pickedQuestion.writeToJson().toString());
+                    Intent notificationIntent = new Intent(context, MainActivity.class);
+                    notificationIntent.putExtra("question", new Gson().toJson(pickedQuestion));
 
                     // create the stack w/ the notification intents
                     TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                    stackBuilder.addParentStack(AnswerActivity.class);
+                    stackBuilder.addParentStack(MainActivity.class);
                     stackBuilder.addNextIntent(notificationIntent);
 
                     // form pending intent

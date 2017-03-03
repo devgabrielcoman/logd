@@ -2,41 +2,10 @@ package com.gabrielcoman.logd.models;
 
 import org.json.JSONObject;
 
-import tv.superawesome.lib.sajsonparser.SABaseObject;
-import tv.superawesome.lib.sajsonparser.SAJsonParser;
+public class SentimentResult {
 
-public class SentimentResult extends SABaseObject {
-
-    private double confidence;
-    private String sentiment;
-
-
-    public SentimentResult(String json) {
-        JSONObject jsonObject = SAJsonParser.newObject(json);
-        readFromJson(jsonObject);
-    }
-
-    public SentimentResult(JSONObject jsonObject) {
-        readFromJson(jsonObject);
-    }
-
-    @Override
-    public void readFromJson(JSONObject json) {
-        try {
-            confidence = Double.parseDouble(SAJsonParser.getString(json, "confidence"));
-        } catch (Exception e) {
-            // do nothing
-        }
-        sentiment = SAJsonParser.getString(json, "sentiment");
-    }
-
-    @Override
-    public JSONObject writeToJson() {
-        return SAJsonParser.newObject(new Object[] {
-                "confidence", confidence,
-                "sentiment", sentiment
-        });
-    }
+    private double confidence = 0.0;
+    private String sentiment = null;
 
     public double getNormalisedSentiment () {
 

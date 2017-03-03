@@ -2,6 +2,7 @@ package com.gabrielcoman.logd.system.api;
 
 import com.gabrielcoman.logd.models.Sentiment;
 import com.gabrielcoman.logdnetwork.Network;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ public class SentimentAPI {
                         return null;
                     }
                 })
-                .map(Sentiment::new)
+                .map(s -> new Gson().fromJson(s, Sentiment.class))
                 .map(sentiment -> sentiment.getResult().getNormalisedSentiment());
     }
 }
