@@ -13,7 +13,7 @@ import android.content.Intent;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import com.gabrielcoman.logd.activities.MainActivity;
+import com.gabrielcoman.logd.activities.main.MainActivity;
 import com.gabrielcoman.logd.models.Question;
 import com.gabrielcoman.logd.system.api.DatabaseAPI;
 import com.gabrielcoman.logd.system.api.QuestionsAPI;

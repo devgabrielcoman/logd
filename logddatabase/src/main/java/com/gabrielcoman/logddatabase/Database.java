@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
@@ -100,20 +102,10 @@ public class Database {
         }
     }
 
-    public static Observable<String> getEntries (Context context, String database) {
-        return Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-
-                Map<String, ?> values = context
-                        .getSharedPreferences(database, Context.MODE_PRIVATE)
-                        .getAll();
-
-                for (String key : values.keySet()) {
-                    subscriber.onNext(key);
-                }
-                subscriber.onCompleted();
-            }
-        });
+    public static List<String> getEntries (Context context, String database) {
+        Map<String, ?> values = context.getSharedPreferences(database, Context.MODE_PRIVATE).getAll();
+        List<String> result = new ArrayList<>();
+        result.addAll(values.keySet());
+        return result;
     }
 }

@@ -2,7 +2,9 @@ package com.gabrielcoman.logd.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 
+import rx.Observable;
 import rx.functions.Action0;
 
 public class BaseActivity extends Activity {
@@ -24,5 +26,20 @@ public class BaseActivity extends Activity {
     public void finishOK () {
         setResult(RESULT_OK);
         finish();
+    }
+
+    public Observable<String> getStringExtras (String key) {
+        return Observable.create(subscriber -> {
+
+            Bundle bundle = BaseActivity.this.getIntent().getExtras();
+            if (bundle != null) {
+                String extra = bundle.getString(key);
+                if (extra != null) {
+                    subscriber.onNext(extra);
+                    subscriber.onCompleted();
+                }
+            }
+
+        });
     }
 }

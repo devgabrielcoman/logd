@@ -1,10 +1,15 @@
-package com.gabrielcoman.logd.activities;
+/**
+ * @Copyright:   Gabriel Coman 2017
+ * @Author:      Gabriel Coman (dev.gabriel.coman@gmail.com)
+ */
+package com.gabrielcoman.logd.activities.journal;
 
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.gabrielcoman.logd.R;
+import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.models.Response;
 import com.gabrielcoman.logd.system.api.DatabaseAPI;
 import com.gabrielcoman.logd.system.api.SentimentAPI;

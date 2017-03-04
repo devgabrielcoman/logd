@@ -1,6 +1,8 @@
+/**
+ * @Copyright:   Gabriel Coman 2017
+ * @Author:      Gabriel Coman (dev.gabriel.coman@gmail.com)
+ */
 package com.gabrielcoman.logd.models;
-
-import org.json.JSONObject;
 
 public class SentimentResult {
 

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context="com.gabrielcoman.logd.activities.JournalActivity">
+    tools:context="com.gabrielcoman.logd.activities.journal.JournalActivity">
 
     <Button
         android:id="@+id/JournalOK"

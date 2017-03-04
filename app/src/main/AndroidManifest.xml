@@ -8,14 +8,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.AnswerActivity"/>
-        <activity android:name=".activities.JournalActivity"/>
+        <activity android:name=".activities.answer.AnswerActivity"/>
+        <activity android:name=".activities.journal.JournalActivity"/>
 
         <receiver android:name=".system.alarm.AlarmReceiver">
             <intent-filter>

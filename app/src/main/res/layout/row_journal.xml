@@ -4,7 +4,7 @@
     android:layout_height="60dp">
 
     <TextView
-        android:id="@+id/AnswersText"
+        android:id="@+id/JournalAnswersText"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
