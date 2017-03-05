@@ -14,6 +14,7 @@ public class DatabaseAPI {
 
     private static final String     RESPONSE_PREFIX = "ENTRY_";
     private static final String     QUESTION_PREFIX = "QUESTION_";
+    private static final String     SETUP_ONCE_KEY  = "SETUP_ONCE_KEY";
 
     public static void writeResponse (Context context, Response response) {
         long entry = System.currentTimeMillis()/1000;
@@ -27,7 +28,6 @@ public class DatabaseAPI {
         for (String key : keys) {
             responses.add(Database.getModel(context, Database.DB_RESPONSE, key, Response.class));
         }
-        Log.d("Logd-App", responses.toString());
         return responses;
     }
 
@@ -37,5 +37,13 @@ public class DatabaseAPI {
 
     public static int getPreviousQuestion (Context context) {
         return Database.getInt(context, Database.DB_QUESTION, QUESTION_PREFIX);
+    }
+
+    public static void writeSetupOnce (Context context) {
+        Database.writeItem(context, Database.DB_SETUP, SETUP_ONCE_KEY, true);
+    }
+
+    public static boolean getSetupOnce (Context context) {
+        return Database.getBool(context, Database.DB_SETUP, SETUP_ONCE_KEY);
     }
 }

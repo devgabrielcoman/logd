@@ -6,16 +6,21 @@ package com.gabrielcoman.logd.activities.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.answer.AnswerActivity;
+import com.gabrielcoman.logd.activities.journal.JournalActivity;
 import com.gabrielcoman.logd.models.Response;
 import com.gabrielcoman.logd.system.alarm.AlarmScheduler;
 import com.gabrielcoman.logd.system.api.DatabaseAPI;
+import com.gabrielcoman.logd.system.setup.AppSetup;
 import com.jakewharton.rxbinding.view.RxView;
 
 import java.util.ArrayList;
@@ -33,8 +38,12 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Button startNotification = (Button) findViewById(R.id.StartNotification);
+        AppSetup.setupAlarmsOnFirstOpen(this);
+
+        FloatingActionButton journalButton = (FloatingActionButton) findViewById(R.id.JournalButton);
 
         ListView history = (ListView) findViewById(R.id.History);
 
@@ -45,9 +54,10 @@ public class MainActivity extends BaseActivity {
                     startActivityForResult(mainIntent, SET_REQ_CODE);
                 });
 
-        RxView.clicks(startNotification)
+        RxView.clicks(journalButton)
                 .subscribe(aVoid -> {
-                    AlarmScheduler.scheduleAlarm(MainActivity.this);
+                    Intent journalIntent = new Intent(MainActivity.this, JournalActivity.class);
+                    MainActivity.this.startActivityForResult(journalIntent, SET_REQ_CODE);
                 });
 
         PublishSubject<List<Response>> subject = PublishSubject.create();
@@ -66,7 +76,7 @@ public class MainActivity extends BaseActivity {
 
                     RxDataSource.create(MainActivity.this)
                             .bindTo(history)
-                            .customiseRow(R.layout.row_history, ResponseViewModel.class, (model, view) -> {
+                            .customiseRow(R.layout.row_history, ResponseViewModel.class, (view, model) -> {
 
                                 ((TextView) view.findViewById(R.id.ResponseSentiment)).setText(model.getValue());
                                 ((TextView) view.findViewById(R.id.ResponseDate)).setText(model.getDate());
@@ -78,5 +88,22 @@ public class MainActivity extends BaseActivity {
                 });
 
         setOnActivityResult(() -> subject.onNext(DatabaseAPI.getResponses(MainActivity.this)));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.ActionTrigger) {
+            AppSetup.scheduleTestAlarm(MainActivity.this);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

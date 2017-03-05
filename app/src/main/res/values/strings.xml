@@ -1,39 +1,6 @@
 <resources>
     <string name="app_name">Logd</string>
 
-    <string name="data_question_morning_1">Did you sleep well last night?</string>
-    <string name="data_question_morning_1_answer_1">Yes!</string>
-    <string name="data_question_morning_1_answer_2">No</string>
-
-    <string name="data_question_morning_2">Did you have nice dreams?</string>
-    <string name="data_question_morning_2_answer_1">Yes, lovely dreams!</string>
-    <string name="data_question_morning_2_answer_2">Can\'t remember but it was all right</string>
-    <string name="data_question_morning_2_answer_3">Woke up because of nightmares</string>
-
-    <string name="data_question_morning_3">Are you feeling energised this morning?</string>
-    <string name="data_question_morning_3_answer_1">Yes, ready to take on the world!</string>
-    <string name="data_question_morning_3_answer_2">It\'s a decent morning</string>
-    <string name="data_question_morning_3_answer_3">Ugh! It\'s one of those mornings</string>
-
-    <string name="data_question_evening_1">How has you day been?</string>
-    <string name="data_question_evening_1_answer_1">It was a good day!</string>
-    <string name="data_question_evening_1_answer_2">Nothing special happened.</string>
-    <string name="data_question_evening_1_answer_3">It was an awful day.</string>
-
-    <string name="data_question_evening_2">Was it a good day today?</string>
-    <string name="data_question_evening_2_answer_1">Yes! sure was!</string>
-    <string name="data_question_evening_2_answer_2">No!</string>
-
-    <string name="data_question_evening_3">Are you feeling grateful for something today?</string>
-    <string name="data_question_evening_3_answer_1">Friends</string>
-    <string name="data_question_evening_3_answer_2">Family</string>
-    <string name="data_question_evening_3_answer_3">My partner</string>
-    <string name="data_question_evening_3_answer_4">My life</string>
-
-    <string name="data_question_evening_4">Did you call a good friend today?</string>
-    <string name="data_question_evening_4_answer_1">Yes</string>
-    <string name="data_question_evening_4_answer_2">No</string>
-
     <string name="data_question_general_answer_journal">Write to journal</string>
 
     <string name="notification_ticker_title">New message from Logd</string>

@@ -23,6 +23,7 @@ import java.util.List;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
 import rx.Observable;
+import rx.functions.Action2;
 
 public class AnswerActivity extends BaseActivity {
 
@@ -50,19 +51,17 @@ public class AnswerActivity extends BaseActivity {
 
                     RxDataSource.create(AnswerActivity.this)
                             .bindTo(listView)
-                            .customiseRow(R.layout.row_answer, ChooseAnswerViewModel.class, (model, view) -> {
+                            .customiseRow(R.layout.row_answer, ChooseAnswerViewModel.class, (view, model) -> {
 
                                 ((TextView) view.findViewById(R.id.AnswersText)).setText(model.getTitle());
 
                             })
-                            .customiseRow(R.layout.row_journal, ChoseJournalViewModel.class, (model, view) -> {
+                            .customiseRow(R.layout.row_journal, ChoseJournalViewModel.class, (view, model) -> {
 
                                 ((TextView) view.findViewById(R.id.JournalAnswersText)).setText(model.getTitle());
 
                             })
-                            .onRowClick(R.layout.row_answer, pos -> {
-
-                                ChooseAnswerViewModel model = (ChooseAnswerViewModel) models.get(pos);
+                            .onRowClick(R.layout.row_answer, (Action2<Integer, ChooseAnswerViewModel>) (pos, model) -> {
 
                                 SentimentAPI
                                         .analyseSentiment(model.getTitle())
@@ -71,9 +70,8 @@ public class AnswerActivity extends BaseActivity {
                                             DatabaseAPI.writeResponse(AnswerActivity.this, response);
                                             finishOK();
                                         });
-
                             })
-                            .onRowClick(R.layout.row_journal, integer -> {
+                            .onRowClick(R.layout.row_journal, pos -> {
 
                                 Intent journalIntent = new Intent(AnswerActivity.this, JournalActivity.class);
                                 AnswerActivity.this.startActivityForResult(journalIntent, SET_REQ_CODE);

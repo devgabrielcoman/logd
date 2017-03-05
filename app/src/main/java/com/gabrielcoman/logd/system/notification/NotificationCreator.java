@@ -17,6 +17,7 @@ public class NotificationCreator {
     public static Notification createNotification (Context context, String text, PendingIntent pendingIntent) {
         return new NotificationCompat
                 .Builder(context)
+                .setAutoCancel(true)
                 .setContentTitle(context.getString(R.string.notification_title))
                 .setContentText(text)
                 .setTicker(context.getString(R.string.notification_ticker_title))
