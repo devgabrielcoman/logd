@@ -3,34 +3,50 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_marginBottom="12dp">
-
-    <TextView
-        android:id="@+id/ResponseSentiment"
-        android:text="0.28"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:gravity="center"/>
+    android:background="#ffffff">
 
     <LinearLayout
-        android:layout_weight="4"
-        android:layout_width="0dp"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="12dp">
+
+        <TextView
+            android:id="@+id/DayOfMonth"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:text="02"/>
+        <TextView
+            android:id="@+id/MonthYear"
+            android:text="Jan 2017"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/ResponseDate"
-            android:textColor="@color/colorPrimary"
-            android:text="22/03/2017"
+            android:id="@+id/TimeText"
+            android:text="\@12:53:00"
+            android:layout_marginTop="12dp"
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"/>
         <TextView
-            android:id="@+id/ResponseText"
+            android:id="@+id/AnwerText"
             android:layout_width="match_parent"
-            android:text="Good!"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="12dp"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "/>
 
     </LinearLayout>
-
 </LinearLayout>

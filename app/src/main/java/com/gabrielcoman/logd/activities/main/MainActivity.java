@@ -78,9 +78,13 @@ public class MainActivity extends BaseActivity {
                             .bindTo(history)
                             .customiseRow(R.layout.row_history, ResponseViewModel.class, (view, model) -> {
 
-                                ((TextView) view.findViewById(R.id.ResponseSentiment)).setText(model.getValue());
-                                ((TextView) view.findViewById(R.id.ResponseDate)).setText(model.getDate());
-                                ((TextView) view.findViewById(R.id.ResponseText)).setText(model.getAnswer());
+                                ((TextView) view.findViewById(R.id.DayOfMonth)).setText(model.getDayOfMonth());
+                                ((TextView) view.findViewById(R.id.MonthYear)).setText(model.getMonthYear());
+                                ((TextView) view.findViewById(R.id.AnwerText)).setText(model.getAnswer());
+
+//                                ((TextView) view.findViewById(R.id.ResponseSentiment)).setText(model.getValue());
+//                                ((TextView) view.findViewById(R.id.ResponseDate)).setText(model.getDate());
+//                                ((TextView) view.findViewById(R.id.ResponseText)).setText(model.getAnswer());
 
                             })
                             .update(models);
