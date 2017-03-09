@@ -8,9 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gabrielcoman.logd.R;
@@ -20,14 +25,19 @@ import com.gabrielcoman.logd.activities.journal.JournalActivity;
 import com.gabrielcoman.logd.models.Response;
 import com.gabrielcoman.logd.system.alarm.AlarmScheduler;
 import com.gabrielcoman.logd.system.api.DatabaseAPI;
+import com.gabrielcoman.logd.system.aux.LogdAux;
 import com.gabrielcoman.logd.system.setup.AppSetup;
 import com.jakewharton.rxbinding.view.RxView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
+import rx.functions.Action1;
+import rx.functions.Action2;
+import rx.functions.Func1;
 import rx.subjects.PublishSubject;
 
 public class MainActivity extends BaseActivity {
@@ -69,22 +79,53 @@ public class MainActivity extends BaseActivity {
                     for (Response r: responses) {
                         viewModels.add(new ResponseViewModel(r));
                     }
-                    Collections.sort(viewModels);
                     return viewModels;
+                })
+                .map(models -> {
+
+                    HashMap<Long, List<ResponseViewModel>> map = new HashMap<>();
+                    for (ResponseViewModel vm : models) {
+                        if (!map.containsKey(vm.getDayTimestamp())) {
+                            List<ResponseViewModel> list = new ArrayList<>();
+                            list.add(vm);
+                            map.put(vm.getDayTimestamp(), list);
+                        } else {
+                            map.get(vm.getDayTimestamp()).add(vm);
+                        }
+                    }
+
+                    List<ResponseGroupViewModel> finalList = new ArrayList<>();
+                    for (Long key : map.keySet()) {
+                        finalList.add(new ResponseGroupViewModel(key, map.get(key)));
+                    }
+                    Collections.sort(finalList);
+
+                    return finalList;
                 })
                 .subscribe(models -> {
 
                     RxDataSource.create(MainActivity.this)
                             .bindTo(history)
-                            .customiseRow(R.layout.row_history, ResponseViewModel.class, (view, model) -> {
+                            .customiseRow(R.layout.row_history, ResponseGroupViewModel.class, (view, model) -> {
 
                                 ((TextView) view.findViewById(R.id.DayOfMonth)).setText(model.getDayOfMonth());
                                 ((TextView) view.findViewById(R.id.MonthYear)).setText(model.getMonthYear());
-                                ((TextView) view.findViewById(R.id.AnwerText)).setText(model.getAnswer());
 
-//                                ((TextView) view.findViewById(R.id.ResponseSentiment)).setText(model.getValue());
-//                                ((TextView) view.findViewById(R.id.ResponseDate)).setText(model.getDate());
-//                                ((TextView) view.findViewById(R.id.ResponseText)).setText(model.getAnswer());
+                                LinearLayout holder = (LinearLayout) view.findViewById(R.id.ResponseHolder);
+
+                                for (ResponseViewModel vm : model.getViewModels()) {
+                                    TextView date = new TextView(MainActivity.this);
+                                    date.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                                    date.setText(vm.getHour());
+                                    date.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    holder.addView(date);
+
+                                    TextView content = new TextView(MainActivity.this);
+                                    content.setPadding(0, 0, 0, (int)LogdAux.dipToPixels(MainActivity.this, 12));
+                                    content.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                                    content.setText(vm.getAnswer());
+                                    holder.addView(content);
+                                }
 
                             })
                             .update(models);
@@ -96,7 +137,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }

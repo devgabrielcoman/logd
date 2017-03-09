@@ -30,23 +30,10 @@
 
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/ResponseHolder"
+        android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/TimeText"
-            android:text="\@12:53:00"
-            android:layout_marginTop="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"/>
-        <TextView
-            android:id="@+id/AnwerText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="12dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "/>
-
     </LinearLayout>
 </LinearLayout>
