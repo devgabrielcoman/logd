@@ -31,7 +31,7 @@ public class AlarmScheduler {
         PendingIntent broadcast = sendBroadcast(context);
 
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, 15);
+        cal.add(Calendar.SECOND, 5);
         manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
     }
 

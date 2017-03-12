@@ -5,50 +5,32 @@
 package com.gabrielcoman.logd.activities.main;
 
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.ListViewCompat;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.db.chart.model.ChartSet;
-import com.db.chart.model.LineSet;
-import com.db.chart.renderer.AxisRenderer;
-import com.db.chart.view.LineChartView;
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.answer.AnswerActivity;
 import com.gabrielcoman.logd.activities.journal.JournalActivity;
 import com.gabrielcoman.logd.models.Response;
-import com.gabrielcoman.logd.system.alarm.AlarmScheduler;
 import com.gabrielcoman.logd.system.api.DatabaseAPI;
 import com.gabrielcoman.logd.system.aux.LogdAux;
 import com.gabrielcoman.logd.system.setup.AppSetup;
-import com.gabrielcoman.logddatabase.Database;
 import com.jakewharton.rxbinding.view.RxView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
-import rx.Subscription;
-import rx.functions.Action1;
-import rx.functions.Action2;
-import rx.functions.Func1;
 import rx.subjects.PublishSubject;
 
 public class MainActivity extends BaseActivity {
@@ -59,6 +41,10 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.MainToolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(R.string.app_name);
 
         AppSetup.setupAlarmsOnFirstOpen(this);
 
@@ -140,12 +126,13 @@ public class MainActivity extends BaseActivity {
                                     TextView date = new TextView(MainActivity.this);
                                     date.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                                     date.setText(vm.getHour());
-                                    date.setTextColor(getResources().getColor(R.color.colorLightBlue));
+                                    date.setTextColor(getResources().getColor(R.color.colorLightAccent));
                                     holder.addView(date);
 
                                     TextView content = new TextView(MainActivity.this);
                                     content.setPadding(0, 0, (int)LogdAux.dipToPixels(MainActivity.this, 12), (int)LogdAux.dipToPixels(MainActivity.this, 12));
                                     content.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                                    content.setTextColor(getResources().getColor(R.color.colorTextMain2));
                                     content.setText(vm.getAnswer());
                                     holder.addView(content);
                                 }

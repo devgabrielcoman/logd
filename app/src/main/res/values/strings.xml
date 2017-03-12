@@ -7,5 +7,6 @@
     <string name="notification_title">Logd question</string>
 
     <string name="activity_journal_save">Save</string>
+    <string name="activity_journal_placeholder">Share your thoughts &#8230;</string>
 
 </resources>
