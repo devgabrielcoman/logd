@@ -22,7 +22,8 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.journal.JournalActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <receiver android:name=".system.alarm.AlarmReceiver">
             <intent-filter>

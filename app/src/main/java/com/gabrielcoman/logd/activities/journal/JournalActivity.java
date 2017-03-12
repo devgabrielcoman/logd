@@ -22,10 +22,20 @@ public class JournalActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_journal);
 
-        Button next = (Button) findViewById(R.id.JournalOK);
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.journalToolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
+        Button save = (Button) findViewById(R.id.JournalSave);
         EditText journalText = (EditText) findViewById(R.id.JournalText);
 
-        RxView.clicks(next)
+        RxView.clicks(save)
                 .subscribe(aVoid -> {
 
                     final String text = journalText.getText().toString();

@@ -10,6 +10,7 @@ class ResponseGroupViewModel implements Comparable {
     private Calendar calendar;
 
     private long dayTimestamp;
+    private double average;
     private List<ResponseViewModel> viewModels;
 
     ResponseGroupViewModel(long dayTimestamp, List<ResponseViewModel> viewModels) {
@@ -18,6 +19,12 @@ class ResponseGroupViewModel implements Comparable {
         Collections.sort(this.viewModels);
         calendar = Calendar.getInstance();
         calendar.setTimeInMillis(dayTimestamp * 1000);
+
+        average = 0.0F;
+        for (ResponseViewModel vm : this.viewModels) {
+            average += vm.getValue();
+        }
+        average = average / this.viewModels.size();
     }
 
     List<ResponseViewModel> getViewModels() {
@@ -27,6 +34,11 @@ class ResponseGroupViewModel implements Comparable {
     String getDayOfMonth() {
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
         return dayOfMonth <= 9 ? ("0" + dayOfMonth) : ("" + dayOfMonth);
+    }
+
+    String getDayAndMonth () {
+        String month = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault());
+        return getDayOfMonth() + " " + month;
     }
 
     String getMonthYear() {
@@ -40,5 +52,9 @@ class ResponseGroupViewModel implements Comparable {
     public int compareTo(Object o) {
         ResponseGroupViewModel r = (ResponseGroupViewModel) o;
         return dayTimestamp > r.dayTimestamp ? -1 : 1;
+    }
+
+    public double getAverage() {
+        return average;
     }
 }

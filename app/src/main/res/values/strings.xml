@@ -6,6 +6,6 @@
     <string name="notification_ticker_title">New message from Logd</string>
     <string name="notification_title">Logd question</string>
 
-    <string name="activity_journal_next">Submit</string>
+    <string name="activity_journal_save">Save</string>
 
 </resources>

@@ -31,8 +31,6 @@ class ResponseViewModel implements Comparable {
         Calendar cal2 = Calendar.getInstance();
         cal2.set(year, month, day, 0, 0, 0);
         dayTimestamp = (cal2.getTimeInMillis() / 1000);
-
-        Log.d("Logd-App", "Day " + dayTimestamp + " vs " + hourTimestamp);
     }
 
     String getAnswer() {
