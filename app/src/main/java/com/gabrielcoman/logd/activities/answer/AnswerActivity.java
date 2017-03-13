@@ -23,7 +23,9 @@ import java.util.List;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
 import rx.Observable;
+import rx.functions.Action1;
 import rx.functions.Action2;
+import rx.functions.Func1;
 
 public class AnswerActivity extends BaseActivity {
 
@@ -34,49 +36,60 @@ public class AnswerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer);
 
+//        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.AnswerToolbar);
+//        setSupportActionBar(toolbar);
+
         ListView listView = (ListView) findViewById(R.id.AnswersList);
 
         getStringExtras("question")
                 .map(s -> new Gson().fromJson(s, Question.class))
-                .flatMap(question -> Observable.from(question.getAnswers()))
-                .map(ChooseAnswerViewModel::new)
-                .toList()
-                .map(chooseAnswerViewModels -> {
-                    List<Object> result = new ArrayList<>();
-                    result.addAll(chooseAnswerViewModels);
-                    result.add(new ChoseJournalViewModel(AnswerActivity.this));
-                    return result;
-                })
-                .subscribe(models -> {
+                .subscribe(question -> {
 
-                    RxDataSource.create(AnswerActivity.this)
-                            .bindTo(listView)
-                            .customiseRow(R.layout.row_answer, ChooseAnswerViewModel.class, (view, model) -> {
+                    // set title
+                    // toolbar.setTitle(question.getTitle());
 
-                                ((TextView) view.findViewById(R.id.AnswersText)).setText(model.getTitle());
-
+                    // set answers
+                    Observable.from(question.getAnswers())
+                            .map(ChooseAnswerViewModel::new)
+                            .toList()
+                            .map(chooseAnswerViewModels -> {
+                                List<Object> result = new ArrayList<>();
+                                result.addAll(chooseAnswerViewModels);
+                                result.add(new ChoseJournalViewModel(AnswerActivity.this));
+                                return result;
                             })
-                            .customiseRow(R.layout.row_journal, ChoseJournalViewModel.class, (view, model) -> {
+                            .subscribe(models -> {
 
-                                ((TextView) view.findViewById(R.id.JournalAnswersText)).setText(model.getTitle());
+                                RxDataSource.create(AnswerActivity.this)
+                                        .bindTo(listView)
+                                        .customiseRow(R.layout.row_answer, ChooseAnswerViewModel.class, (view, model) -> {
 
-                            })
-                            .onRowClick(R.layout.row_answer, (Action2<Integer, ChooseAnswerViewModel>) (pos, model) -> {
+                                            ((TextView) view.findViewById(R.id.AnswersText)).setText(model.getTitle());
 
-                                SentimentAPI
-                                        .analyseSentiment(model.getTitle())
-                                        .subscribe(value -> {
-                                            Response response = new Response(model.getTitle(), value);
-                                            DatabaseAPI.writeResponse(AnswerActivity.this, response);
-                                            finishOK();
-                                        });
-                            })
-                            .onRowClick(R.layout.row_journal, pos -> {
+                                        })
+                                        .customiseRow(R.layout.row_journal, ChoseJournalViewModel.class, (view, model) -> {
 
-                                Intent journalIntent = new Intent(AnswerActivity.this, JournalActivity.class);
-                                AnswerActivity.this.startActivityForResult(journalIntent, SET_REQ_CODE);
-                            })
-                            .update(models);
+                                            ((TextView) view.findViewById(R.id.JournalAnswersText)).setText(model.getTitle());
+
+                                        })
+                                        .onRowClick(R.layout.row_answer, (Action2<Integer, ChooseAnswerViewModel>) (pos, model) -> {
+
+                                            SentimentAPI
+                                                    .analyseSentiment(model.getTitle())
+                                                    .subscribe(value -> {
+                                                        Response response = new Response(model.getTitle(), value);
+                                                        DatabaseAPI.writeResponse(AnswerActivity.this, response);
+                                                        finishOK();
+                                                    });
+                                        })
+                                        .onRowClick(R.layout.row_journal, pos -> {
+
+                                            Intent journalIntent = new Intent(AnswerActivity.this, JournalActivity.class);
+                                            AnswerActivity.this.startActivityForResult(journalIntent, SET_REQ_CODE);
+                                        })
+                                        .update(models);
+                            });
+
                 });
 
         setOnActivityResult(this::finishOK);

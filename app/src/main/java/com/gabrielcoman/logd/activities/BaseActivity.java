@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import rx.Observable;
+import rx.Single;
+import rx.SingleSubscriber;
 import rx.functions.Action0;
 
 public class BaseActivity extends AppCompatActivity {
@@ -29,15 +31,14 @@ public class BaseActivity extends AppCompatActivity {
         finish();
     }
 
-    public Observable<String> getStringExtras (String key) {
-        return Observable.create(subscriber -> {
+    public Single<String> getStringExtras (String key) {
+        return Single.create(singleSubscriber -> {
 
             Bundle bundle = BaseActivity.this.getIntent().getExtras();
             if (bundle != null) {
                 String extra = bundle.getString(key);
                 if (extra != null) {
-                    subscriber.onNext(extra);
-                    subscriber.onCompleted();
+                    singleSubscriber.onSuccess(extra);
                 }
             }
 

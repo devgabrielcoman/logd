@@ -24,7 +24,7 @@ public class LogdLineChart extends LineChartView {
 
         setXAxis(false);
         setYAxis(false);
-        setLabelsColor(getResources().getColor(R.color.colorLightAccent));
+        setLabelsColor(getResources().getColor(R.color.colorNeutralAccent));
         setYLabels(AxisRenderer.LabelPosition.NONE);
         setAxisBorderValues(-1, 1);
     }

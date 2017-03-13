@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import com.gabrielcoman.logd.activities.answer.AnswerActivity;
 import com.gabrielcoman.logd.activities.main.MainActivity;
 import com.gabrielcoman.logd.models.Question;
 import com.gabrielcoman.logd.system.api.DatabaseAPI;
@@ -41,12 +42,12 @@ public class AlarmReceiver extends BroadcastReceiver {
                     DatabaseAPI.writeQuestion(context, pickedQuestion);
 
                     // form intent
-                    Intent notificationIntent = new Intent(context, MainActivity.class);
+                    Intent notificationIntent = new Intent(context, AnswerActivity.class);
                     notificationIntent.putExtra("question", new Gson().toJson(pickedQuestion));
 
                     // create the stack w/ the notification intents
                     TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                    stackBuilder.addParentStack(MainActivity.class);
+                    stackBuilder.addParentStack(AnswerActivity.class);
                     stackBuilder.addNextIntent(notificationIntent);
 
                     // form pending intent

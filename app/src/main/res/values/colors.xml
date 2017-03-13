@@ -3,8 +3,10 @@
     <color name="colorPrimary">#343f57</color>
     <color name="colorPrimaryDark">#2d374c</color>
     <color name="colorAccent">#ffc755</color>
-    <color name="colorLightAccent">#6a84c3</color>
+    <color name="colorLightAccent">#fcebc9</color>
+    <color name="colorNeutralAccent">#6a84c3</color>
     <color name="colorTextBg">#ffffff</color>
+    <color name="colorTextLightHint">#efefef</color>
     <color name="colorTextHint">#b3b5bb</color>
     <color name="colorTextMain">#000000</color>
     <color name="colorTextMain2">#565656</color>

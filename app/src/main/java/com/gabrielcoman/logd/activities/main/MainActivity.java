@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity {
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.MainToolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.app_name);
+        toolbar.setTitle("");
 
         AppSetup.setupAlarmsOnFirstOpen(this);
 
@@ -126,7 +126,7 @@ public class MainActivity extends BaseActivity {
                                     TextView date = new TextView(MainActivity.this);
                                     date.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                                     date.setText(vm.getHour());
-                                    date.setTextColor(getResources().getColor(R.color.colorLightAccent));
+                                    date.setTextColor(getResources().getColor(R.color.colorNeutralAccent));
                                     holder.addView(date);
 
                                     TextView content = new TextView(MainActivity.this);
