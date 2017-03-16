@@ -23,6 +23,8 @@ import com.google.gson.Gson;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
+    private static final int NOTIFICATION_ID = 2315552;
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -41,24 +43,24 @@ public class AlarmReceiver extends BroadcastReceiver {
                     // update the database
                     DatabaseAPI.writeQuestion(context, pickedQuestion);
 
-                    // form intent
-                    Intent notificationIntent = new Intent(context, AnswerActivity.class);
-                    notificationIntent.putExtra("question", new Gson().toJson(pickedQuestion));
-
-                    // create the stack w/ the notification intents
-                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                    stackBuilder.addParentStack(AnswerActivity.class);
-                    stackBuilder.addNextIntent(notificationIntent);
-
-                    // form pending intent
-                    PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+//                    // form intent
+//                    Intent notificationIntent = new Intent(context, AnswerActivity.class);
+//                    notificationIntent.putExtra("question", new Gson().toJson(pickedQuestion));
+//
+//                    // create the stack w/ the notification intents
+//                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+//                    stackBuilder.addParentStack(AnswerActivity.class);
+//                    stackBuilder.addNextIntent(notificationIntent);
+//
+//                    // form pending intent
+//                    PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
                     // create notification
-                    Notification notification = NotificationCreator.createNotification(context, pickedQuestion.getTitle(), pendingIntent);
+                    Notification notification = NotificationCreator.customNotification(context, pickedQuestion);
 
                     // start notification
                     NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.notify(0, notification);
+                    notificationManager.notify(NOTIFICATION_ID, notification);
                 });
     }
 }

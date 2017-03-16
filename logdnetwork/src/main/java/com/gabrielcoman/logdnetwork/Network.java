@@ -11,11 +11,13 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import rx.Observable;
+import rx.Single;
+import rx.SingleSubscriber;
 import rx.Subscriber;
 
 public class Network {
 
-    public static Observable<Response> post (String url, HashMap<String, String> body) {
+    public static Single<Response> post (String url, HashMap<String, String> body) {
 
         OkHttpClient client = new OkHttpClient();
 
@@ -30,9 +32,9 @@ public class Network {
                 .post(formBody)
                 .build();
 
-        return Observable.create(new Observable.OnSubscribe<Response>() {
+        return Single.create(new Single.OnSubscribe<Response>() {
             @Override
-            public void call(Subscriber<? super Response> subscriber) {
+            public void call(SingleSubscriber<? super Response> subscriber) {
 
                 client.newCall(request).enqueue(new Callback() {
                     @Override
@@ -42,10 +44,10 @@ public class Network {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        subscriber.onNext(response);
-                        subscriber.onCompleted();
+                        subscriber.onSuccess(response);
                     }
                 });
+
             }
         });
 

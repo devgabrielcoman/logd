@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/imagenotileft"
+        android:src="@drawable/notifico"
+        android:padding="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextMain"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/imagenotileft" />
+
+    <LinearLayout
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/title"
+        android:layout_toRightOf="@+id/imagenotileft">
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/journalBtn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="vertical"
+        android:layout_below="@+id/text"
+        android:layout_toRightOf="@+id/imagenotileft">
+
+        <Button
+            android:id="@+id/JournalButton"
+            android:layout_alignParentEnd="true"
+            android:text="JOURNAL"
+            android:textColor="@color/colorGray"
+            android:background="@color/colorTransparent"
+            android:layout_width="100dp"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imagenotiright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="10dp" />
+
+</RelativeLayout>

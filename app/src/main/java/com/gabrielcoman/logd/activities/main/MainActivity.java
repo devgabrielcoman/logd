@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -34,6 +35,8 @@ import gabrielcoman.com.rxdatasource.RxDataSource;
 import rx.subjects.PublishSubject;
 
 public class MainActivity extends BaseActivity {
+
+    PublishSubject<List<Response>> subject;
 
     private static final int SET_REQ_CODE = 111;
 
@@ -68,7 +71,7 @@ public class MainActivity extends BaseActivity {
                     MainActivity.this.startActivityForResult(journalIntent, SET_REQ_CODE);
                 });
 
-        PublishSubject<List<Response>> subject = PublishSubject.create();
+        subject = PublishSubject.create();
 
         subject.asObservable()
                 .startWith(DatabaseAPI.getResponses(this))
@@ -102,16 +105,18 @@ public class MainActivity extends BaseActivity {
                 })
                 .subscribe(models -> {
 
-                    int length = models.size() >= 7 ? 7 : models.size();
-                    String [] labels = new String[length];
-                    float[] values = new float[length];
-                    for (int i = length - 1; i >= 0; i--) {
-                        int t = (length - 1) - i;
-                        labels[t] = models.get(i).getDayAndMonth();
-                        values[t] = (float) models.get(i).getAverage();
-                    }
+                    if (models.size() > 0) {
+                        int length = models.size() >= 7 ? 7 : models.size();
+                        String[] labels = new String[length];
+                        float[] values = new float[length];
+                        for (int i = length - 1; i >= 0; i--) {
+                            int t = (length - 1) - i;
+                            labels[t] = models.get(i).getDayAndMonth();
+                            values[t] = (float) models.get(i).getAverage();
+                        }
 
-                    lineChartView.setData(labels, values);
+                        lineChartView.setData(labels, values);
+                    }
 
                     RxDataSource.create(MainActivity.this)
                             .bindTo(history)
@@ -143,6 +148,15 @@ public class MainActivity extends BaseActivity {
                 });
 
         setOnActivityResult(() -> subject.onNext(DatabaseAPI.getResponses(MainActivity.this)));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("Logd-App", "RESUME");
+        if (subject != null) {
+            subject.onNext(DatabaseAPI.getResponses(MainActivity.this));
+        }
     }
 
     @Override

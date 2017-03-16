@@ -6,8 +6,11 @@
     <color name="colorLightAccent">#fcebc9</color>
     <color name="colorNeutralAccent">#6a84c3</color>
     <color name="colorTextBg">#ffffff</color>
+    <color name="colorTextContrast">#ffffff</color>
     <color name="colorTextLightHint">#efefef</color>
     <color name="colorTextHint">#b3b5bb</color>
     <color name="colorTextMain">#000000</color>
     <color name="colorTextMain2">#565656</color>
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorGray">#7d7d7d</color>
 </resources>

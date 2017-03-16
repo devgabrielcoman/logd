@@ -8,10 +8,11 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import rx.Observable;
+import rx.Single;
 
 public class SentimentAPI {
 
-    public static Observable<Double> analyseSentiment (String text) {
+    public static Single<Double> analyseSentiment (String text) {
 
         String url = "http://sentiment.vivekn.com/api/text/";
         HashMap<String, String> body = new HashMap<>();
