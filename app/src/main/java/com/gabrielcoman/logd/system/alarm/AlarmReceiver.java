@@ -13,16 +13,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.gabrielcoman.logd.R;
+import com.gabrielcoman.logd.activities.answer.AnswerActivity;
 import com.gabrielcoman.logd.activities.journal.JournalActivity;
 import com.gabrielcoman.logd.models.Question;
 import com.gabrielcoman.logd.models.Response;
 import com.gabrielcoman.logd.system.api.DatabaseAPI;
 import com.gabrielcoman.logd.system.api.QuestionsAPI;
 import com.gabrielcoman.logd.system.api.SentimentAPI;
+import com.google.gson.Gson;
 
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -46,12 +48,30 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private Notification customNotification (Context context, Question question) {
 
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.notification_custom);
+        //
+        // answer intent
+        Intent answerIntent = new Intent(context, AnswerActivity.class);
+        answerIntent.putExtra("question", new Gson().toJson(question));
+        TaskStackBuilder answerStackBuilder = TaskStackBuilder.create(context);
+        answerStackBuilder.addParentStack(AnswerActivity.class);
+        answerStackBuilder.addNextIntent(answerIntent);
 
-        remoteViews.setTextViewText(R.id.QuestionTitle, question.getTitle());
-        remoteViews.setTextViewText(R.id.NotificationAnswerText1, question.getAnswers().get(0));
-        remoteViews.setTextViewText(R.id.NotificationAnswerText2, question.getAnswers().get(1));
-        remoteViews.setTextViewText(R.id.NotificationAnswerText3, question.getAnswers().get(2));
+        PendingIntent pendingAnswer = answerStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //
+        // Small Notification Content
+        RemoteViews smallContent = new RemoteViews(context.getPackageName(), R.layout.notification_custom_small);
+
+        smallContent.setTextViewText(R.id.QuestionTitle, question.getTitle());
+
+        //
+        // Big Notification Content
+        RemoteViews bigContent = new RemoteViews(context.getPackageName(), R.layout.notification_custom_big);
+
+        bigContent.setTextViewText(R.id.QuestionTitle, question.getTitle());
+        bigContent.setTextViewText(R.id.NotificationAnswerText1, question.getAnswers().get(0));
+        bigContent.setTextViewText(R.id.NotificationAnswerText2, question.getAnswers().get(1));
+        bigContent.setTextViewText(R.id.NotificationAnswerText3, question.getAnswers().get(2));
 
         Intent intent1 = new Intent(context, NotificationAnswerText1.class);
         intent1.setAction(Long.toString(System.currentTimeMillis()));
@@ -68,27 +88,27 @@ public class AlarmReceiver extends BroadcastReceiver {
         intent3.putExtra("answer3_extra", question.getAnswers().get(2));
         PendingIntent pIntent3 = PendingIntent.getBroadcast(context, 0, intent3, PendingIntent.FLAG_ONE_SHOT);
 
-        remoteViews.setOnClickPendingIntent(R.id.NotificationAnswerText1, pIntent1);
-        remoteViews.setOnClickPendingIntent(R.id.NotificationAnswerText2, pIntent2);
-        remoteViews.setOnClickPendingIntent(R.id.NotificationAnswerText3, pIntent3);
+        bigContent.setOnClickPendingIntent(R.id.NotificationAnswerText1, pIntent1);
+        bigContent.setOnClickPendingIntent(R.id.NotificationAnswerText2, pIntent2);
+        bigContent.setOnClickPendingIntent(R.id.NotificationAnswerText3, pIntent3);
 
         // pending intent for the journal button
-        Intent notificationIntent = new Intent(context, JournalActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addParentStack(JournalActivity.class);
-        stackBuilder.addNextIntent(notificationIntent);
+        Intent journalIntent = new Intent(context, JournalActivity.class);
+        TaskStackBuilder journalStackBuilder = TaskStackBuilder.create(context);
+        journalStackBuilder.addParentStack(JournalActivity.class);
+        journalStackBuilder.addNextIntent(journalIntent);
 
-        PendingIntent pending = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingJournal = journalStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        remoteViews.setOnClickPendingIntent(R.id.JournalButton, pending);
+        bigContent.setOnClickPendingIntent(R.id.JournalButton, pendingJournal);
 
         return new NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setTicker(context.getString(R.string.notification_ticker_title))
                 .setAutoCancel(true)
-                .setContentIntent(pending)
-                .setContent(remoteViews)
-                .setCustomBigContentView(remoteViews)
+                .setContentIntent(pendingAnswer)
+                .setContent(smallContent)
+                .setCustomBigContentView(bigContent)
                 .build ();
     }
 
@@ -110,10 +130,11 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .subscribe(value -> {
                         Response response = new Response(answer, value);
                         DatabaseAPI.writeResponse(context, response);
-                        Log.d("Logd-App", "Finished analysing " + answer + " ==> " + value);
 
                         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                         notificationManager.cancel(NOTIFICATION_ID);
+
+                        Toast.makeText(context, R.string.data_question_answered_toast, Toast.LENGTH_SHORT).show();
                     });
 
         }

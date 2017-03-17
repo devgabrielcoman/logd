@@ -155,7 +155,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("Logd-App", "RESUME");
         if (subject != null) {
             subject.onNext(DatabaseAPI.getResponses(MainActivity.this));
         }
