@@ -31,14 +31,6 @@ public class DatabaseAPI {
         return responses;
     }
 
-    public static void writeQuestion (Context context, Question question) {
-        Database.writeItem(context, Database.DB_QUESTION, QUESTION_PREFIX, question.hashCode());
-    }
-
-    public static int getPreviousQuestion (Context context) {
-        return Database.getInt(context, Database.DB_QUESTION, QUESTION_PREFIX);
-    }
-
     public static void writeSetupOnce (Context context) {
         Database.writeItem(context, Database.DB_SETUP, SETUP_ONCE_KEY, true);
     }

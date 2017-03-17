@@ -12,6 +12,11 @@ public class Question {
     private String title;
     private List<String> answers = new ArrayList<>();
 
+    public Question (String title, List<String> answers) {
+        this.title = title;
+        this.answers = answers;
+    }
+
     public String getTitle() {
         return title;
     }

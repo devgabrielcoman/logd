@@ -9,4 +9,7 @@
     <string name="activity_journal_save">Save</string>
     <string name="activity_journal_placeholder">Share your thoughts &#8230;</string>
 
+    <string name="data_question_morning_title">What best describes your morning?</string>
+    <string name="data_question_evening_title">How would you describe your day?</string>
+
 </resources>

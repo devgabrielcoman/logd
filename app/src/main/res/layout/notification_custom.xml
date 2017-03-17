@@ -17,7 +17,29 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorTextMain"
         android:orientation="vertical"
-        android:layout_toRightOf="@+id/imagenotileft" />
+        android:layout_toRightOf="@+id/imagenotileft">
+
+        <TextView
+            android:text="@string/app_name"
+            android:textColor="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/QuestionTitle"
+            android:text="Are you feeling energised this morning?"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/colorTextMain" />
+
+        <LinearLayout
+            android:background="@color/colorTextHint"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/text"
@@ -26,6 +48,51 @@
         android:orientation="vertical"
         android:layout_below="@+id/title"
         android:layout_toRightOf="@+id/imagenotileft">
+
+        <Button
+            android:background="@color/colorTransparent"
+            android:textAlignment="textStart"
+            android:id="@+id/NotificationAnswerText1"
+            android:text="Answer 1"
+            android:textColor="@color/colorGray"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:background="@color/colorTextHint"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <Button
+            android:background="@color/colorTransparent"
+            android:textAlignment="textStart"
+            android:id="@+id/NotificationAnswerText2"
+            android:text="Answer 2"
+            android:textColor="@color/colorGray"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:background="@color/colorTextHint"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <Button
+            android:background="@color/colorTransparent"
+            android:textAlignment="textStart"
+            android:id="@+id/NotificationAnswerText3"
+            android:text="Answer 3"
+            android:textColor="@color/colorGray"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:background="@color/colorTextHint"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
 
     </LinearLayout>
 

@@ -50,8 +50,8 @@ class ResponseViewModel implements Comparable {
         cal.setTimeInMillis(hourTimestamp * 1000);
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
-        String sHour = hour == 0 ? "00" : "" + hour;
-        String sMinute = minute == 0 ? "00": "" + minute;
+        String sHour = hour == 0 ? "00" : hour <= 9 ? "0" + hour : "" + hour;
+        String sMinute = minute == 0 ? "00": minute <= 9 ? "0" + minute : "" + minute;
         return "@" + sHour + ":" + sMinute;
     }
 

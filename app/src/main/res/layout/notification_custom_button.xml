@@ -10,6 +10,7 @@
         android:id="@+id/NotificationAnswerText"
         android:text="Nothing special happened"
         android:textColor="@color/colorGray"
+        android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

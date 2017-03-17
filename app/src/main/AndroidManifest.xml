@@ -33,7 +33,9 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".system.notification.AnswerButtonListener"/>
+        <receiver android:name=".system.alarm.AlarmReceiver$NotificationAnswerText1"/>
+        <receiver android:name=".system.alarm.AlarmReceiver$NotificationAnswerText2"/>
+        <receiver android:name=".system.alarm.AlarmReceiver$NotificationAnswerText3"/>
     </application>
 
 </manifest>
