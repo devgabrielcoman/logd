@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity {
                                     TextView date = new TextView(MainActivity.this);
                                     date.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                                     date.setText(vm.getHour());
-                                    date.setTextColor(getResources().getColor(R.color.primary_light));
+                                    date.setTextColor(getResources().getColor(R.color.primary));
                                     holder.addView(date);
 
                                     TextView content = new TextView(MainActivity.this);

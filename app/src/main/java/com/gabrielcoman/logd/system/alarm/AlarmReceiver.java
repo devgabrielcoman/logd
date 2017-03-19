@@ -103,7 +103,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         bigContent.setOnClickPendingIntent(R.id.JournalButton, pendingJournal);
 
         return new NotificationCompat.Builder(context)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_notif)
                 .setTicker(context.getString(R.string.notification_ticker_title))
                 .setAutoCancel(true)
                 .setContentIntent(pendingAnswer)
