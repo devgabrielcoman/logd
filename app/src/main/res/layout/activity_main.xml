@@ -26,7 +26,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <com.gabrielcoman.logd.activities.main.LogdLineChart
-                android:background="@color/colorPrimary"
+                android:background="@color/primary"
                 android:id="@+id/Chart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -59,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        app:srcCompat="@android:drawable/ic_input_add"/>
+        android:scaleType="center"
+        android:src="@drawable/ic_add_white_24dp"/>
 
 </android.support.design.widget.CoordinatorLayout>

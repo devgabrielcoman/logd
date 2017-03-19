@@ -15,13 +15,13 @@
         android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/primary_text"
         android:orientation="vertical"
         android:layout_toRightOf="@+id/imagenotileft">
 
         <TextView
             android:text="@string/app_name"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/primary"
             android:layout_width="match_parent"
             android:textStyle="bold"
             android:layout_height="wrap_content" />
@@ -32,10 +32,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/primary_text" />
 
         <LinearLayout
-            android:background="@color/colorLightGray"
+            android:background="@color/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 
@@ -50,47 +50,47 @@
         android:layout_toRightOf="@+id/imagenotileft">
 
         <Button
-            android:background="@color/colorTransparent"
+            android:background="@android:color/transparent"
             android:textAlignment="textStart"
             android:id="@+id/NotificationAnswerText1"
             android:text="Answer 1"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/secondary_text"
             android:textAllCaps="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:background="@color/colorLightGray"
+            android:background="@color/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 
         <Button
-            android:background="@color/colorTransparent"
+            android:background="@android:color/transparent"
             android:textAlignment="textStart"
             android:id="@+id/NotificationAnswerText2"
             android:text="Answer 2"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/secondary_text"
             android:textAllCaps="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:background="@color/colorLightGray"
+            android:background="@color/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 
         <Button
-            android:background="@color/colorTransparent"
+            android:background="@android:color/transparent"
             android:textAlignment="textStart"
             android:id="@+id/NotificationAnswerText3"
             android:text="Answer 3"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/secondary_text"
             android:textAllCaps="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:background="@color/colorLightGray"
+            android:background="@color/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 
@@ -108,8 +108,8 @@
             android:id="@+id/JournalButton"
             android:layout_alignParentEnd="true"
             android:text="JOURNAL"
-            android:textColor="@color/colorGray"
-            android:background="@color/colorTransparent"
+            android:textColor="@color/secondary_text"
+            android:background="@android:color/transparent"
             android:layout_width="100dp"
             android:layout_height="match_parent" />
 

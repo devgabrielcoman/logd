@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- accent colors -->
-    <color name="colorPrimary">#343f57</color>
-    <color name="colorPrimaryDark">#2d374c</color>
-    <color name="colorAccent">#ffc755</color>
-    <color name="colorNeutralAccent">#6a84c3</color>
+    <!-- main colors -->
+    <color name="primary">#343f57</color>
+    <color name="primary_dark">#2d374c</color>
+    <color name="primary_light">#C5CAE9</color>
+    <color name="accent">#ffc755</color>
+    <color name="divider">#b3b5bb</color>
+    <color name="primary_text">#000000</color>
+    <color name="secondary_text">#7d7d7d</color>
+    <color name="icons">#ffffff</color>
 
-    <!-- neutral colors -->
-    <color name="colorTransparent">#00000000</color>
+    <!-- aux colors -->
     <color name="colorWhite">#ffffff</color>
-    <color name="colorLightGray">#b3b5bb</color>
-    <color name="colorBlack">#000000</color>
-    <color name="colorGray">#7d7d7d</color>
 </resources>

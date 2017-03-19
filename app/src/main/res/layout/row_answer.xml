@@ -9,14 +9,14 @@
         android:text="Nothing special happened"
         android:gravity="center_vertical"
         android:textSize="16sp"
-        android:textColor="@color/colorGray"
+        android:textColor="@color/secondary_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"/>
 
     <LinearLayout
-        android:background="@color/colorLightGray"
+        android:background="@color/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 

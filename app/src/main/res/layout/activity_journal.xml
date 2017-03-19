@@ -18,7 +18,7 @@
             android:id="@+id/JournalToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="@color/primary"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <Button
@@ -31,7 +31,7 @@
                 android:paddingLeft="20dp"
                 android:layout_height="match_parent"
                 android:text="@string/activity_journal_save"
-                android:background="@color/colorTransparent"/>
+                android:background="@android:color/transparent"/>
 
         </android.support.v7.widget.Toolbar>
 
