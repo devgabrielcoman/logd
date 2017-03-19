@@ -158,7 +158,7 @@ public class MainActivity extends BaseActivity {
                                     TextView content = new TextView(MainActivity.this);
                                     content.setPadding(0, 0, (int)LogdAux.dipToPixels(MainActivity.this, 12), (int)LogdAux.dipToPixels(MainActivity.this, 12));
                                     content.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                                    // content.setTextColor(getResources().getColor(R.color.colorTextMain2));
+                                    content.setTextColor(getResources().getColor(R.color.secondary_text));
                                     content.setText(vm.getAnswer());
                                     holder.addView(content);
                                 }
