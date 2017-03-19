@@ -35,7 +35,23 @@ public class AlarmScheduler {
         manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
     }
 
-    public static void scheduleDailyAlarm (Context context) {
+    public static void scheduleTestAlarm2 (Context context) {
+
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        PendingIntent broadcast = sendBroadcast(context);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 12);
+        calendar.set(Calendar.MINUTE, 7);
+
+        Log.d("Logd-App", "Scheduled morning alarm for 12:00 PM");
+
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, broadcast);
+    }
+
+    public static void scheduleMorningAlarm (Context context) {
 
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
@@ -46,7 +62,26 @@ public class AlarmScheduler {
         calendar.set(Calendar.HOUR_OF_DAY, 8);
         calendar.set(Calendar.MINUTE, 30);
 
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, broadcast);
+        Log.d("Logd-App", "Scheduled morning alarm for 8:30 AM");
+
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, broadcast);
+    }
+
+    public static void scheduleEveningAlarm (Context context) {
+
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        PendingIntent broadcast = sendBroadcast(context);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 20);
+        calendar.set(Calendar.MINUTE, 30);
+
+        Log.d("Logd-App", "Scheduled evening alarm for 8:30 PM");
+
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, broadcast);
+
     }
 
 }

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorTextBg">
+    android:background="@color/colorWhite">
 
     <ImageView
         android:id="@+id/imagenotileft"
@@ -16,7 +16,7 @@
         android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorTextMain"
+        android:textColor="@color/colorBlack"
         android:orientation="vertical"
         android:layout_toRightOf="@+id/imagenotileft">
 
@@ -33,10 +33,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:textColor="@color/colorTextMain" />
+            android:textColor="@color/colorBlack" />
 
         <LinearLayout
-            android:background="@color/colorTextHint"
+            android:background="@color/colorLightGray"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:background="@color/colorTextHint"
+            android:background="@color/colorLightGray"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:background="@color/colorTextHint"
+            android:background="@color/colorLightGray"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:background="@color/colorTextHint"
+            android:background="@color/colorLightGray"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 

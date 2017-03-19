@@ -6,9 +6,10 @@ package com.gabrielcoman.logd.activities.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -20,12 +21,10 @@ import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.answer.AnswerActivity;
 import com.gabrielcoman.logd.activities.journal.JournalActivity;
-import com.gabrielcoman.logd.models.Question;
 import com.gabrielcoman.logd.models.Response;
+import com.gabrielcoman.logd.system.alarm.AlarmScheduler;
 import com.gabrielcoman.logd.system.api.DatabaseAPI;
-import com.gabrielcoman.logd.system.api.QuestionsAPI;
 import com.gabrielcoman.logd.system.aux.LogdAux;
-import com.gabrielcoman.logd.system.setup.AppSetup;
 import com.jakewharton.rxbinding.view.RxView;
 
 import java.util.ArrayList;
@@ -51,7 +50,26 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle("");
 
-        AppSetup.setupAlarmsOnFirstOpen(this);
+        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.CollapsingToolbar);
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.AppBarLayout);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
+                    isShow = true;
+                } else if(isShow) {
+                    collapsingToolbarLayout.setTitle(" ");
+                    isShow = false;
+                }
+            }
+        });
 
         FloatingActionButton journalButton = (FloatingActionButton) findViewById(R.id.JournalButton);
 
@@ -139,7 +157,7 @@ public class MainActivity extends BaseActivity {
                                     TextView content = new TextView(MainActivity.this);
                                     content.setPadding(0, 0, (int)LogdAux.dipToPixels(MainActivity.this, 12), (int)LogdAux.dipToPixels(MainActivity.this, 12));
                                     content.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                                    content.setTextColor(getResources().getColor(R.color.colorTextMain2));
+                                    // content.setTextColor(getResources().getColor(R.color.colorTextMain2));
                                     content.setText(vm.getAnswer());
                                     holder.addView(content);
                                 }
@@ -158,6 +176,9 @@ public class MainActivity extends BaseActivity {
         if (subject != null) {
             subject.onNext(DatabaseAPI.getResponses(MainActivity.this));
         }
+        AlarmScheduler.scheduleTestAlarm2(this);
+        AlarmScheduler.scheduleMorningAlarm(this);
+        AlarmScheduler.scheduleEveningAlarm(this);
     }
 
     @Override
@@ -170,7 +191,7 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.ActionTrigger) {
-            AppSetup.scheduleTestAlarm(MainActivity.this);
+            AlarmScheduler.scheduleTestAlarm(this);
             return true;
         }
         return super.onOptionsItemSelected(item);

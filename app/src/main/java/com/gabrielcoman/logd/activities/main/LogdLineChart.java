@@ -34,7 +34,7 @@ public class LogdLineChart extends LineChartView {
         set.setSmooth(false);
         set.setThickness(5.0F);
         set.setDotsRadius(16.0F);
-        set.setColor(getResources().getColor(R.color.colorTextHint));
+        set.setColor(getResources().getColor(R.color.colorWhite));
         set.setDotsColor(getResources().getColor(R.color.colorAccent));
         set.setFill(getResources().getColor(R.color.colorPrimaryDark));
 

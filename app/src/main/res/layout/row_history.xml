@@ -17,13 +17,13 @@
             android:layout_height="wrap_content"
             android:textSize="32sp"
             android:textStyle="bold"
-            android:textColor="@color/colorTextMain"
+            android:textColor="@color/colorBlack"
             android:text="02"/>
         <TextView
             android:id="@+id/MonthYear"
             android:text="Jan 2017"
             android:gravity="center"
-            android:textColor="@color/colorTextMain"
+            android:textColor="@color/colorBlack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
