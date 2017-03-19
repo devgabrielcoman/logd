@@ -51,6 +51,7 @@ public class MainActivity extends BaseActivity {
         toolbar.setTitle("");
 
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.CollapsingToolbar);
+        collapsingToolbarLayout.setTitle(" ");
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.AppBarLayout);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = false;
