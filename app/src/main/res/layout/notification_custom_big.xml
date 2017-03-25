@@ -9,7 +9,6 @@
         android:padding="12dp"
         android:layout_width="60dp"
         android:layout_height="60dp" />
-
     <LinearLayout
         android:id="@+id/title"
         android:layout_marginTop="12dp"

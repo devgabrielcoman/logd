@@ -4,18 +4,27 @@
  */
 package com.gabrielcoman.logd.activities.main;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
@@ -25,6 +34,7 @@ import com.gabrielcoman.logd.models.Response;
 import com.gabrielcoman.logd.system.alarm.AlarmScheduler;
 import com.gabrielcoman.logd.system.api.DatabaseAPI;
 import com.gabrielcoman.logd.system.aux.LogdAux;
+import com.gabrielcoman.logddatabase.Database;
 import com.jakewharton.rxbinding.view.RxView;
 
 import java.util.ArrayList;
@@ -33,13 +43,23 @@ import java.util.HashMap;
 import java.util.List;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
+import rx.functions.Action1;
 import rx.subjects.PublishSubject;
 
 public class MainActivity extends BaseActivity {
 
-    PublishSubject<List<Response>> subject;
+    private Menu  menu;
+    private PublishSubject<List<Response>> subject;
 
     private static final int SET_REQ_CODE = 111;
+
+    private static final int REQUEST = 1;
+    private static final String PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final int GRANTED = PackageManager.PERMISSION_GRANTED;
+
+    private boolean granted = false;
+    private boolean alert = false;
+    private boolean neveragain = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,29 +192,169 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (subject != null) {
-            subject.onNext(DatabaseAPI.getResponses(MainActivity.this));
-        }
-        AlarmScheduler.scheduleTestAlarm2(this);
-        AlarmScheduler.scheduleMorningAlarm(this);
-        AlarmScheduler.scheduleEveningAlarm(this);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
+
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        boolean areSet = AlarmScheduler.areAlarmsSet(this);
+
+        if (areSet) {
+            menu.getItem(0).setTitle("Stop daily questions");
+        } else {
+            menu.getItem(0).setTitle("Set daily questions");
+        }
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         if (id == R.id.ActionTrigger) {
-            AlarmScheduler.scheduleTestAlarm(this);
+
+            boolean areSet = AlarmScheduler.areAlarmsSet(this);
+
+            if (areSet) {
+                setAlarmsOff();
+            } else {
+                setAlarmsOn();
+            }
+
             return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        if (subject != null) {
+            subject.onNext(DatabaseAPI.getResponses(MainActivity.this));
+        }
+
+        updateState();
+    }
+
+    private void updateState () {
+        granted = ActivityCompat.checkSelfPermission(this, PERMISSION) == GRANTED;
+        neveragain = DatabaseAPI.shouldNeverShowPermissions(this);
+
+        if (!granted) {
+            Log.d("Logd-App", "At resume there are no permissions so unscheduled alarms");
+            setAlarmsAndMenuOff();
+        }
+        alert = AlarmScheduler.areAlarmsSet(this);
+    }
+
+    private void setAlarmsOn () {
+
+        //
+        // when trying to set alarms, we've discovered we don't have any permissions
+        if (!granted) {
+
+            //
+            // if the user hasn't yet selected he doesn't want the permission pop-up to show
+            // we just show him the popup
+            if (!neveragain) {
+                ActivityCompat.requestPermissions(this, new String[]{PERMISSION}, REQUEST);
+            }
+            //
+            // if the user has said he doesn't want the app asking for permissions
+            // just send him to settings
+            else {
+                gotoSettings(this);
+            }
+        }
+        //
+        // we have the required permissions
+        else {
+            setAlarmsAndMenuOn();
+        }
+    }
+
+    private void setAlarmsOff () {
+        setAlarmsAndMenuOff();
+    }
+
+    private void setAlarmsAndMenuOn () {
+
+        AlarmScheduler.scheduleAlarms(this)
+                .subscribe(success -> {
+
+                    if (success) {
+                        DatabaseAPI.setAlarmStatus(MainActivity.this, true);
+
+                        if (menu != null && menu.getItem(0) != null) {
+                            menu.getItem(0).setTitle(getResources().getString(R.string.data_question_questions_stop_title));
+                        }
+
+                        Toast.makeText(MainActivity.this, R.string.data_question_questions_set, Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Log.d("Logd-App", "Could not schedule alarms!");
+                    }
+
+                });
+    }
+
+    private void setAlarmsAndMenuOff () {
+
+        AlarmScheduler.unscheduleAlarms(this)
+                .subscribe(success -> {
+
+                    if (success) {
+
+                        DatabaseAPI.setAlarmStatus(MainActivity.this, false);
+
+                        if (menu != null && menu.getItem(0) != null) {
+                            menu.getItem(0).setTitle(getResources().getString(R.string.data_question_questions_set_title));
+                        }
+
+                        Toast.makeText(MainActivity.this, R.string.data_question_questions_stopped, Toast.LENGTH_SHORT).show();
+
+                    }
+                    else {
+                        Log.d("Logd-App", "Could not unschedule alarms!");
+                    }
+                });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST: {
+
+                if(ActivityCompat.shouldShowRequestPermissionRationale(this, PERMISSION)){
+                    //denied
+                    Log.e("Logd-App", "Permission denied!");
+                    setAlarmsAndMenuOff();
+                }else{
+                    if(ActivityCompat.checkSelfPermission(this, PERMISSION) == GRANTED){
+                        setAlarmsAndMenuOn();
+                    } else {
+                        DatabaseAPI.writeNeverShowPermissions(this);
+                        neveragain = true;
+                    }
+                }
+            }
+        }
+    }
+
+    private static void gotoSettings (final Activity context) {
+        if (context != null) {
+            final Intent i = new Intent();
+            i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            i.addCategory(Intent.CATEGORY_DEFAULT);
+            i.setData(Uri.parse("package:" + context.getPackageName()));
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            context.startActivity(i);
+        }
     }
 }

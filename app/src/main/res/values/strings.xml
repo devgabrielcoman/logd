@@ -14,4 +14,9 @@
 
     <string name="data_question_answered_toast">Log recorded.</string>
 
+    <string name="data_question_questions_set">Daily questions set</string>
+    <string name="data_question_questions_stopped">Daily questions stopped</string>
+
+    <string name="data_question_questions_set_title">Set daily questions</string>
+    <string name="data_question_questions_stop_title">Stop daily questions</string>
 </resources>

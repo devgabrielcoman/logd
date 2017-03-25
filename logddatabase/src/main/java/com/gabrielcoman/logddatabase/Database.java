@@ -11,10 +11,6 @@ import java.util.Map;
 
 public class Database {
 
-    public static final String     DB_RESPONSE  = "RESPONSE_DB";
-    public static final String     DB_QUESTION  = "QUESTION_DB";
-    public static final String     DB_SETUP     = "SETUP_DB";
-
     public static <T> void writeItem (Context context, String database, String key, T item) {
 
         try {

@@ -1,87 +1,166 @@
 /**
- * @Copyright:   Gabriel Coman 2017
- * @Author:      Gabriel Coman (dev.gabriel.coman@gmail.com)
+ * @Copyright: Gabriel Coman 2017
+ * @Author: Gabriel Coman (dev.gabriel.coman@gmail.com)
  */
 package com.gabrielcoman.logd.system.alarm;
 
-import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.util.Calendar;
+import com.gabrielcoman.logd.system.api.DatabaseAPI;
+import com.gabrielcoman.logddatabase.Database;
+import com.google.android.gms.awareness.Awareness;
+import com.google.android.gms.awareness.fence.AwarenessFence;
+import com.google.android.gms.awareness.fence.FenceQueryRequest;
+import com.google.android.gms.awareness.fence.FenceQueryResult;
+import com.google.android.gms.awareness.fence.FenceState;
+import com.google.android.gms.awareness.fence.FenceStateMap;
+import com.google.android.gms.awareness.fence.FenceUpdateRequest;
+import com.google.android.gms.awareness.fence.TimeFence;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+
+import java.util.Arrays;
+import java.util.List;
+
+import rx.Observable;
+import rx.Single;
+import rx.SingleSubscriber;
+import rx.Subscriber;
+import rx.functions.Action1;
+import rx.functions.Func2;
 
 public class AlarmScheduler {
 
-    private static PendingIntent sendBroadcast (Context context) {
+    private static final String alarmKey = "morningeveningKey";
+    private static final String morningKey = "morningFenceKey";
+    private static final String eveningKey = "eveningFenceKey";
 
-        Intent intent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
-        intent.addCategory("android.intent.category.DEFAULT");
+    private static GoogleApiClient client;
 
-        return PendingIntent.getBroadcast(context, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    private static void connectClient (Context context) {
+
+        // create client
+        client = new GoogleApiClient.Builder(context).addApi(Awareness.API).build();
+
+        // connect it!
+        try {
+            client.connect();
+        } catch (Exception e) {
+            // do nothing
+        }
+    }
+
+    public static Observable<Boolean> scheduleAlarms (Context context) throws SecurityException {
+
+        return Observable.combineLatest(scheduleMorningAlarm(context), scheduleEveningAlarm(context), (morning, evening) -> morning && evening);
+//                .subscribe(set -> {
+//
+//                    if (set) {
+//                        DatabaseAPI.setAlarmStatus(context, true);
+//                    }
+//
+//                });
 
     }
 
-    public static void scheduleTestAlarm (Context context) {
+    private static Observable<Boolean> scheduleMorningAlarm (Context context) throws SecurityException {
 
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (client == null) {
+            connectClient(context);
+        }
 
-        PendingIntent broadcast = sendBroadcast(context);
+        Intent intent = new Intent(context, MorningAlarmReceiver.class);
+        PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, 5);
-        manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
+        AwarenessFence morningFence = TimeFence.inTimeInterval(TimeFence.TIME_INTERVAL_MORNING);
+
+        FenceUpdateRequest request = new FenceUpdateRequest.Builder().addFence(morningKey, morningFence, pIntent).build();
+
+        return Observable.create(subscriber -> {
+
+            Awareness.FenceApi.updateFences(client, request)
+                    .setResultCallback(status -> subscriber.onNext(status.isSuccess()));
+
+        });
+
     }
 
-    public static void scheduleTestAlarm2 (Context context) {
+    private static Observable<Boolean> scheduleEveningAlarm (Context context) throws SecurityException {
 
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (client == null) {
+            connectClient(context);
+        }
 
-        PendingIntent broadcast = sendBroadcast(context);
+        Intent intent = new Intent(context, EveningAlarmReceiver.class);
+        PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 12);
-        calendar.set(Calendar.MINUTE, 7);
+        AwarenessFence eveningFence = TimeFence.inTimeInterval(TimeFence.TIME_INTERVAL_EVENING);
 
-        Log.d("Logd-App", "Scheduled morning alarm for 12:00 PM");
+        FenceUpdateRequest request = new FenceUpdateRequest.Builder().addFence(eveningKey, eveningFence, pIntent).build();
 
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, broadcast);
+        return Observable.create(subscriber -> {
+
+            Awareness.FenceApi.updateFences(client, request)
+                    .setResultCallback(status -> subscriber.onNext(status.isSuccess()));
+
+        });
+
+
     }
 
-    public static void scheduleMorningAlarm (Context context) {
+    public static Observable<Boolean> unscheduleAlarms (Context context) throws SecurityException {
 
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        return Observable.combineLatest(unscheduleMorningAlarm(context), unscheduleEveningAlarm(context), (morning, evening) -> morning && evening);
+//                .subscribe(unset -> {
+//
+//                    if (unset) {
+//                        DatabaseAPI.setAlarmStatus(context, false);
+//                    }
+//
+//                });
 
-        PendingIntent broadcast = sendBroadcast(context);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 8);
-        calendar.set(Calendar.MINUTE, 30);
-
-        Log.d("Logd-App", "Scheduled morning alarm for 8:30 AM");
-
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, broadcast);
     }
 
-    public static void scheduleEveningAlarm (Context context) {
+    private static Observable<Boolean> unscheduleMorningAlarm (Context context) throws SecurityException {
 
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (client == null) {
+            connectClient(context);
+        }
 
-        PendingIntent broadcast = sendBroadcast(context);
+        FenceUpdateRequest request = new FenceUpdateRequest.Builder().removeFence(morningKey).build();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 20);
-        calendar.set(Calendar.MINUTE, 30);
+        return Observable.create(subscriber -> {
 
-        Log.d("Logd-App", "Scheduled evening alarm for 8:30 PM");
+            Awareness.FenceApi.updateFences(client, request)
+                    .setResultCallback(status -> subscriber.onNext(status.isSuccess()));
 
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, broadcast);
+        });
 
+    }
+
+    private static Observable<Boolean> unscheduleEveningAlarm (Context context) throws SecurityException {
+
+        if (client == null) {
+            connectClient(context);
+        }
+
+        FenceUpdateRequest request = new FenceUpdateRequest.Builder().removeFence(eveningKey).build();
+
+        return Observable.create(subscriber -> {
+
+            Awareness.FenceApi.updateFences(client, request)
+                    .setResultCallback(status -> subscriber.onNext(status.isSuccess()));
+
+        });
+
+    }
+
+    public static boolean areAlarmsSet (Context context) {
+        return DatabaseAPI.areAlarmsSet(context);
     }
 
 }

@@ -1,11 +1,6 @@
-/**
- * @Copyright:   Gabriel Coman 2017
- * @Author:      Gabriel Coman (dev.gabriel.coman@gmail.com)
- */
 package com.gabrielcoman.logd.system.alarm;
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -22,31 +17,16 @@ import com.gabrielcoman.logd.activities.journal.JournalActivity;
 import com.gabrielcoman.logd.models.Question;
 import com.gabrielcoman.logd.models.Response;
 import com.gabrielcoman.logd.system.api.DatabaseAPI;
-import com.gabrielcoman.logd.system.api.QuestionsAPI;
 import com.gabrielcoman.logd.system.api.SentimentAPI;
 import com.google.gson.Gson;
 
 import rx.android.schedulers.AndroidSchedulers;
 
-public class AlarmReceiver extends BroadcastReceiver {
+public class NotificationCreator {
 
-    private static final int NOTIFICATION_ID = 2315552;
+    public static final int NOTIFICATION_ID = 2315552;
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-
-        QuestionsAPI.getMorningQuestion(context)
-                .subscribe(question -> {
-
-                    Notification notification = customNotification(context, question);
-
-                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.notify(NOTIFICATION_ID, notification);
-
-                });
-    }
-
-    private Notification customNotification (Context context, Question question) {
+    public static Notification customNotification (Context context, Question question) {
 
         //
         // answer intent
@@ -131,7 +111,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                         Response response = new Response(answer, value);
                         DatabaseAPI.writeResponse(context, response);
 
-                        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                        android.app.NotificationManager notificationManager = (android.app.NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                         notificationManager.cancel(NOTIFICATION_ID);
 
                         Toast.makeText(context, R.string.data_question_answered_toast, Toast.LENGTH_SHORT).show();
