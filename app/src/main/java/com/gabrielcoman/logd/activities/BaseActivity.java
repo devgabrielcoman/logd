@@ -44,4 +44,16 @@ public class BaseActivity extends AppCompatActivity {
 
         });
     }
+
+    public Single<Boolean> getBooleanExtras (String key) {
+        return Single.create(singleSubscriber -> {
+
+            Bundle bundle = BaseActivity.this.getIntent().getExtras();
+            if (bundle != null) {
+                boolean extra = bundle.getBoolean(key);
+                singleSubscriber.onSuccess(extra);
+            }
+
+        });
+    }
 }

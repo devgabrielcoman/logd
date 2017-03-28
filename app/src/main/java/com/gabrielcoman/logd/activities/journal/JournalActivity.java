@@ -53,7 +53,7 @@ public class JournalActivity extends BaseActivity {
                             .subscribe(sentiment -> {
 
                                 Response response = new Response(text, sentiment);
-                                DatabaseAPI.writeResponse(JournalActivity.this, response);
+                                DatabaseAPI.writeJournalResponse(JournalActivity.this, response);
                                 Toast.makeText(JournalActivity.this, R.string.data_question_answered_toast, Toast.LENGTH_SHORT).show();
                                 finishOK();
 

@@ -45,6 +45,8 @@ import java.util.List;
 import gabrielcoman.com.rxdatasource.RxDataSource;
 import rx.functions.Action1;
 import rx.subjects.PublishSubject;
+import tv.superawesome.lib.sautils.SAAlert;
+import tv.superawesome.lib.sautils.SAAlertInterface;
 
 public class MainActivity extends BaseActivity {
 
@@ -57,6 +59,7 @@ public class MainActivity extends BaseActivity {
     private static final String PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final int GRANTED = PackageManager.PERMISSION_GRANTED;
 
+    private boolean firstStart = true;
     private boolean granted = false;
     private boolean alert = false;
     private boolean neveragain = false;
@@ -243,12 +246,19 @@ public class MainActivity extends BaseActivity {
     private void updateState () {
         granted = ActivityCompat.checkSelfPermission(this, PERMISSION) == GRANTED;
         neveragain = DatabaseAPI.shouldNeverShowPermissions(this);
+        firstStart = DatabaseAPI.firstStart(this);
 
-        if (!granted) {
+        if (!granted && !firstStart) {
             Log.d("Logd-App", "At resume there are no permissions so unscheduled alarms");
             setAlarmsAndMenuOff();
         }
         alert = AlarmScheduler.areAlarmsSet(this);
+
+        if (firstStart) {
+            Log.d("Logd-App", "At resume found out it's first start so asking for permissions");
+            DatabaseAPI.writeAppStarted(this);
+            setAlarmsOn();
+        }
     }
 
     private void setAlarmsOn () {
@@ -261,13 +271,44 @@ public class MainActivity extends BaseActivity {
             // if the user hasn't yet selected he doesn't want the permission pop-up to show
             // we just show him the popup
             if (!neveragain) {
-                ActivityCompat.requestPermissions(this, new String[]{PERMISSION}, REQUEST);
+
+                SAAlert.getInstance()
+                        .show(this,
+                                getString(R.string.permission_first_title),
+                                getString(R.string.permission_first_message),
+                                getString(R.string.permission_first_ok),
+                                getString(R.string.permission_first_nok),
+                                false,
+                                0,
+                                (i, s) -> {
+                                    // first button
+                                    if (i == 0) {
+                                        ActivityCompat.requestPermissions(this, new String[]{PERMISSION}, REQUEST);
+                                    }
+                                });
+
+
             }
             //
             // if the user has said he doesn't want the app asking for permissions
             // just send him to settings
             else {
-                gotoSettings(this);
+
+                SAAlert.getInstance()
+                        .show(this,
+                                getString(R.string.permission_settings_title),
+                                getString(R.string.permission_settings_message),
+                                getString(R.string.permission_settings_ok),
+                                getString(R.string.permission_settings_nok),
+                                false,
+                                0,
+                                (i, s) -> {
+                                    // first button
+                                    if (i == 0) {
+                                        gotoSettings(this);
+                                    }
+                                });
+
             }
         }
         //

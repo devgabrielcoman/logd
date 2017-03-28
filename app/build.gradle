@@ -52,6 +52,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-awareness:10.2.0'
 
     compile 'com.diogobernardino:williamchart:2.4.0'
+
+    compile 'tv.superawesome.lib.sautils:sautils:0.3.4'
     
     compile project(':logdnetwork')
     compile project(':logddatabase')

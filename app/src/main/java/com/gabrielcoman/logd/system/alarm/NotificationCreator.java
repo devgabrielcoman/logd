@@ -18,6 +18,7 @@ import com.gabrielcoman.logd.models.Question;
 import com.gabrielcoman.logd.models.Response;
 import com.gabrielcoman.logd.system.api.DatabaseAPI;
 import com.gabrielcoman.logd.system.api.SentimentAPI;
+import com.gabrielcoman.logddatabase.Database;
 import com.google.gson.Gson;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -26,12 +27,13 @@ public class NotificationCreator {
 
     public static final int NOTIFICATION_ID = 2315552;
 
-    public static Notification customNotification (Context context, Question question) {
+    public static Notification customNotification (Context context, boolean isMorning, Question question) {
 
         //
         // answer intent
         Intent answerIntent = new Intent(context, AnswerActivity.class);
         answerIntent.putExtra("question", new Gson().toJson(question));
+        answerIntent.putExtra("isMorning", isMorning);
         TaskStackBuilder answerStackBuilder = TaskStackBuilder.create(context);
         answerStackBuilder.addParentStack(AnswerActivity.class);
         answerStackBuilder.addNextIntent(answerIntent);
@@ -56,16 +58,19 @@ public class NotificationCreator {
         Intent intent1 = new Intent(context, NotificationAnswerText1.class);
         intent1.setAction(Long.toString(System.currentTimeMillis()));
         intent1.putExtra("answer1_extra", question.getAnswers().get(0));
+        intent1.putExtra("isMorning", isMorning);
         PendingIntent pIntent1 = PendingIntent.getBroadcast(context, 0, intent1, PendingIntent.FLAG_ONE_SHOT);
 
         Intent intent2 = new Intent(context, NotificationAnswerText2.class);
         intent2.setAction(Long.toString(System.currentTimeMillis()));
         intent2.putExtra("answer2_extra", question.getAnswers().get(1));
+        intent2.putExtra("isMorning", isMorning);
         PendingIntent pIntent2 = PendingIntent.getBroadcast(context, 0, intent2, PendingIntent.FLAG_ONE_SHOT);
 
         Intent intent3 = new Intent(context, NotificationAnswerText3.class);
         intent3.setAction(Long.toString(System.currentTimeMillis()));
         intent3.putExtra("answer3_extra", question.getAnswers().get(2));
+        intent3.putExtra("isMorning", isMorning);
         PendingIntent pIntent3 = PendingIntent.getBroadcast(context, 0, intent3, PendingIntent.FLAG_ONE_SHOT);
 
         bigContent.setOnClickPendingIntent(R.id.NotificationAnswerText1, pIntent1);
@@ -103,13 +108,18 @@ public class NotificationCreator {
 
             Bundle bundle = intent.getExtras();
             String answer = bundle.getString(extra);
+            boolean isMorning = bundle.getBoolean("isMorning");
 
             SentimentAPI
                     .analyseSentiment(answer)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(value -> {
                         Response response = new Response(answer, value);
-                        DatabaseAPI.writeResponse(context, response);
+                        if (isMorning) {
+                            DatabaseAPI.writeMorningResponse(context, response);
+                        } else {
+                            DatabaseAPI.writeEveningResponse(context, response);
+                        }
 
                         android.app.NotificationManager notificationManager = (android.app.NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                         notificationManager.cancel(NOTIFICATION_ID);

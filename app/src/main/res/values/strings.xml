@@ -19,4 +19,14 @@
 
     <string name="data_question_questions_set_title">Set daily questions</string>
     <string name="data_question_questions_stop_title">Stop daily questions</string>
+
+    <string name="permission_first_title">Hey!</string>
+    <string name="permission_first_message">Logd requires you to grant it the Access Fine Location permission from your phone. This is needed in order to send you just two questions a day - one in the morning and one in the evening - to see how your day has been.</string>
+    <string name="permission_first_ok">Accept</string>
+    <string name="permission_first_nok">Maybe later</string>
+
+    <string name="permission_settings_title">Hey!</string>
+    <string name="permission_settings_message">Logd requires you to grant it the Access Fine Location permission from your phone. This is needed in order to send you just two questions a day - one in the morning and one in the evening - to see how your day has been. You\'ll be redirected to the app\'s Setting Page to manually grant it this permission. After that you can retry to enable questions.</string>
+    <string name="permission_settings_ok">Take me there</string>
+    <string name="permission_settings_nok">Maybe later</string>
 </resources>
