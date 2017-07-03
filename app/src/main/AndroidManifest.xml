@@ -94,12 +94,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <receiver android:name=".system.alarm.MorningAlarmReceiver"
-            android:enabled="true"
-            android:exported="true"/>
-        <receiver android:name=".system.alarm.EveningAlarmReceiver"
-            android:enabled="true"
-            android:exported="true"/>
         <receiver android:name=".system.alarm.NotificationCreator$NotificationAnswerText1"/>
         <receiver android:name=".system.alarm.NotificationCreator$NotificationAnswerText2"/>
         <receiver android:name=".system.alarm.NotificationCreator$NotificationAnswerText3"/>

@@ -15,7 +15,6 @@ import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.journal.JournalActivity;
 import com.gabrielcoman.logd.models.Question;
 import com.gabrielcoman.logd.models.Response;
-import com.gabrielcoman.logd.system.api.DatabaseAPI;
 import com.gabrielcoman.logd.system.api.SentimentAPI;
 import com.google.gson.Gson;
 import com.jakewharton.rxbinding.view.RxView;
@@ -75,19 +74,19 @@ public class AnswerActivity extends BaseActivity {
     }
 
     private void analyseSentiment (String answer, boolean isMorning) {
-        SentimentAPI
-                .analyseSentiment(answer)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(value -> {
-                    Response response = new Response(answer, value);
-                    if (isMorning) {
-                        DatabaseAPI.writeMorningResponse(AnswerActivity.this, response);
-                    } else {
-                        DatabaseAPI.writeEveningResponse(AnswerActivity.this, response);
-                    }
-                    Toast.makeText(AnswerActivity.this, R.string.data_question_answered_toast, Toast.LENGTH_SHORT).show();
-                    finishOK();
-                });
+//        SentimentAPI
+//                .analyseSentiment(answer)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(value -> {
+//                    Response response = new Response(answer, value);
+//                    if (isMorning) {
+//                        DatabaseAPI.writeMorningResponse(AnswerActivity.this, response);
+//                    } else {
+//                        DatabaseAPI.writeEveningResponse(AnswerActivity.this, response);
+//                    }
+//                    Toast.makeText(AnswerActivity.this, R.string.data_question_answered_toast, Toast.LENGTH_SHORT).show();
+//                    finishOK();
+//                });
     }
 }
 
