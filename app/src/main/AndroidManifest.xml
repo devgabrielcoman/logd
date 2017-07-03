@@ -19,6 +19,8 @@
             android:name="com.google.android.awareness.API_KEY"
             android:value="AIzaSyAawbBHJnxIJBgjRURtL5s4XFoN0_d1Ym0"/>
 
+        <!-- facebook -->
+
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
 
@@ -36,6 +38,31 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+        <!-- firebase -->
+
+        <service
+            android:name="com.gabrielcoman.logd.system.firebase.LogdFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.gabrielcoman.logd.system.firebase.LogdFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notif" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/primary" />
+
+        <!-- main -->
 
         <activity android:name=".activities.intro.IntroActivity"
             android:screenOrientation="portrait"
@@ -76,6 +103,8 @@
         <receiver android:name=".system.alarm.NotificationCreator$NotificationAnswerText1"/>
         <receiver android:name=".system.alarm.NotificationCreator$NotificationAnswerText2"/>
         <receiver android:name=".system.alarm.NotificationCreator$NotificationAnswerText3"/>
+
+
     </application>
 
 </manifest>

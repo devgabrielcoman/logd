@@ -1,16 +1,16 @@
 package com.gabrielcoman.logd.activities.intro;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.facebook.AccessToken;
 import com.gabrielcoman.logd.R;
+import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.login.LoginActivity;
 import com.gabrielcoman.logd.activities.main.MainActivity;
 
-public class IntroActivity extends Activity {
+public class IntroActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

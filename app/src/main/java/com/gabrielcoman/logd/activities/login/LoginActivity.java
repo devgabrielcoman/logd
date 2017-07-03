@@ -1,9 +1,7 @@
 package com.gabrielcoman.logd.activities.login;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.facebook.CallbackManager;
@@ -14,11 +12,12 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.gabrielcoman.logd.R;
+import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.setup.SetupActivity;
 
 import java.util.Arrays;
 
-public class LoginActivity extends Activity implements FacebookCallback<LoginResult> {
+public class LoginActivity extends BaseActivity implements FacebookCallback<LoginResult> {
 
     CallbackManager callbackManager;
 
@@ -38,16 +37,16 @@ public class LoginActivity extends Activity implements FacebookCallback<LoginRes
         LoginManager.getInstance().registerCallback(callbackManager, this);
     }
 
-    //
-    // start the login action
-    public void loginAction(View view) {
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    //
+    // start the login action
+    public void loginAction(View view) {
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

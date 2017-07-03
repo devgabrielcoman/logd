@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "719131778045",
+    "firebase_url": "https://logd-da13f.firebaseio.com",
+    "project_id": "logd-da13f",
+    "storage_bucket": "logd-da13f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:719131778045:android:7232134150657919",
+        "android_client_info": {
+          "package_name": "com.gabrielcoman.logd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "719131778045-60nr8103ge087ec8ssu9toobail1rm05.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEX_okNPn-jQkXUkYa6a6WZocAm9Pj2uY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

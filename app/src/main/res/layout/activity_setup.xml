@@ -6,4 +6,11 @@
     android:background="@color/colorWhite"
     tools:context="com.gabrielcoman.logd.activities.setup.SetupActivity">
 
+    <Button
+        android:id="@+id/EnableNotifs"
+        android:text="Enable Notifications"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:onClick="enableNotifications"/>
+
 </LinearLayout>
