@@ -3,10 +3,6 @@
     package="com.gabrielcoman.logd">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -94,9 +90,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <receiver android:name=".system.alarm.NotificationCreator$NotificationAnswerText1"/>
-        <receiver android:name=".system.alarm.NotificationCreator$NotificationAnswerText2"/>
-        <receiver android:name=".system.alarm.NotificationCreator$NotificationAnswerText3"/>
+        <!--<receiver android:name=".system.alarm.NotificationCreator$NotificationAnswerText1"/>-->
+        <!--<receiver android:name=".system.alarm.NotificationCreator$NotificationAnswerText2"/>-->
+        <!--<receiver android:name=".system.alarm.NotificationCreator$NotificationAnswerText3"/>-->
 
 
     </application>

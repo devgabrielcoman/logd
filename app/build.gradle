@@ -9,7 +9,6 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         jackOptions {
             enabled true
         }
@@ -24,6 +23,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/maven/com.squareup.okhttp3/okhttp/pom.properties'
+        exclude 'META-INF/maven/com.squareup.okhttp3/okhttp/pom.xml'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.properties'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.xml'
+    }
 }
 
 repositories {
@@ -34,10 +39,6 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'io.reactivex:rxandroid:1.2.1'
@@ -46,13 +47,15 @@ dependencies {
     compile 'gabrielcoman.com.rxdatasource:rxdatasource:1.0.6'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.google.guava:guava:18.0'
-    compile 'com.google.android.gms:play-services-awareness:10.2.6'
     compile 'com.diogobernardino:williamchart:2.4.0'
     compile 'tv.superawesome.lib.sautils:sautils:0.3.4'
-    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-    compile 'com.google.firebase:firebase-messaging:10.2.6'
-    testCompile 'junit:junit:4.12'
-
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile ('com.facebook.android:facebook-android-sdk:[4,5)', {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    })
+    compile ('com.google.firebase:firebase-messaging:10.2.6', {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    })
 }
 
 
