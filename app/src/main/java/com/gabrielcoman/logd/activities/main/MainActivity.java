@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        FloatingActionButton journalButton = (FloatingActionButton) findViewById(R.id.JournalButton);
+//        FloatingActionButton journalButton = (FloatingActionButton) findViewById(R.id.JournalButton);
 
         ListView history = (ListView) findViewById(R.id.History);
         ViewCompat.setNestedScrollingEnabled(history, true);
@@ -109,11 +109,11 @@ public class MainActivity extends BaseActivity {
                     startActivityForResult(mainIntent, SET_REQ_CODE);
                 });
 
-        RxView.clicks(journalButton)
-                .subscribe(aVoid -> {
-                    Intent journalIntent = new Intent(MainActivity.this, JournalActivity.class);
-                    MainActivity.this.startActivityForResult(journalIntent, SET_REQ_CODE);
-                });
+//        RxView.clicks(journalButton)
+//                .subscribe(aVoid -> {
+//                    Intent journalIntent = new Intent(MainActivity.this, JournalActivity.class);
+//                    MainActivity.this.startActivityForResult(journalIntent, SET_REQ_CODE);
+//                });
 
         subject = PublishSubject.create();
 

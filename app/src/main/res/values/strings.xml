@@ -1,4 +1,8 @@
 <resources>
+
+    <string name="facebook_app_id">453735794981322</string>
+    <string name="fb_login_protocol_scheme">fb453735794981322</string>
+
     <string name="app_name">Logd</string>
 
     <string name="data_question_general_answer_journal">Write to journal</string>

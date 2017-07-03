@@ -29,6 +29,7 @@ android {
 repositories {
     maven { url 'https://oss.jfrog.org/libs-snapshot' }
     maven { url 'http://dl.bintray.com/gabrielcoman/maven' }
+    mavenCentral()
 }
 
 dependencies {
@@ -54,7 +55,9 @@ dependencies {
     compile 'com.diogobernardino:williamchart:2.4.0'
 
     compile 'tv.superawesome.lib.sautils:sautils:0.3.4'
-    
+
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+
     compile project(':logdnetwork')
     compile project(':logddatabase')
 }
