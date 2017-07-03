@@ -14,10 +14,11 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.gabrielcoman.logd.R;
+import com.gabrielcoman.logd.activities.setup.SetupActivity;
 
 import java.util.Arrays;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements FacebookCallback<LoginResult> {
 
     CallbackManager callbackManager;
 
@@ -26,29 +27,19 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //
+        // initialize Facebook SDK
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 
+        //
+        // create the callback manager and register a login callback
         callbackManager = CallbackManager.Factory.create();
-
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d("Logd", "Success!");
-            }
-
-            @Override
-            public void onCancel() {
-                Log.w("Logd", "Canceled!");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.e("Logd", "Error: " + error.toString());
-            }
-        });
+        LoginManager.getInstance().registerCallback(callbackManager, this);
     }
 
+    //
+    // start the login action
     public void loginAction(View view) {
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
     }
@@ -57,5 +48,25 @@ public class LoginActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // FacebookCallback<LoginResult> implementation
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void onSuccess(LoginResult loginResult) {
+        Intent intent = new Intent(LoginActivity.this, SetupActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onCancel() {
+        // do nothing
+    }
+
+    @Override
+    public void onError(FacebookException error) {
+        // @todo: show error
     }
 }
