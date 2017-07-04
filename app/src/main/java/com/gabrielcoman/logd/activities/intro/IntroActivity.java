@@ -12,11 +12,13 @@ import com.gabrielcoman.logd.activities.login.LoginActivity;
 import com.gabrielcoman.logd.activities.main.MainActivity;
 import com.gabrielcoman.logd.library.network.NetworkTask;
 import com.gabrielcoman.logd.library.network.SendTokenRequest;
-import com.gabrielcoman.logd.system.register.RegisterSystem;
+import com.gabrielcoman.logd.library.system.ObtainTokenRequest;
+import com.gabrielcoman.logd.library.system.ObtainTokenTask;
 
 public class IntroActivity extends BaseActivity {
 
-    RegisterSystem registerSystem;
+    ObtainTokenRequest request;
+    ObtainTokenTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +27,9 @@ public class IntroActivity extends BaseActivity {
 
         //
         // send token data at start
-        registerSystem = new RegisterSystem();
-        registerSystem.execute()
+        request = new ObtainTokenRequest();
+        task = new ObtainTokenTask();
+        task.execute(request)
                 .flatMap(token -> {
                     SendTokenRequest request = new SendTokenRequest(token);
                     NetworkTask<SendTokenRequest> task = new NetworkTask<>();

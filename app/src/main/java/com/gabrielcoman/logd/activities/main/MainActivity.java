@@ -4,41 +4,10 @@
  */
 package com.gabrielcoman.logd.activities.main;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.ViewCompat;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
-import com.gabrielcoman.logd.activities.answer.AnswerActivity;
-import com.gabrielcoman.logd.models.Response;
-import com.gabrielcoman.logd.system.aux.LogdAux;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-
-import gabrielcoman.com.rxdatasource.RxDataSource;
-import rx.subjects.PublishSubject;
-import tv.superawesome.lib.sautils.SAAlert;
 
 public class MainActivity extends BaseActivity {
 
