@@ -10,24 +10,26 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.Profile;
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.journal.JournalActivity;
+import com.gabrielcoman.logd.library.network.AddResponseRequest;
 import com.gabrielcoman.logd.library.network.GetAnswersRequest;
 import com.gabrielcoman.logd.library.network.GetSentimentRequest;
 import com.gabrielcoman.logd.library.network.NetworkTask;
 import com.gabrielcoman.logd.library.parse.ParseAnswersTask;
 import com.gabrielcoman.logd.library.parse.ParseRequest;
 import com.gabrielcoman.logd.library.parse.ParseSentimentTask;
+import com.gabrielcoman.logd.models.Response;
 import com.jakewharton.rxbinding.view.RxView;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Action2;
-import rx.functions.Func1;
 
 public class AnswerActivity extends BaseActivity {
 
@@ -76,15 +78,22 @@ public class AnswerActivity extends BaseActivity {
                                             ParseSentimentTask task1 = new ParseSentimentTask();
                                             return task1.execute(request1);
                                         })
-                                        .subscribe(sentiment -> {
-                                            Log.d("Logd", "Sentiment is " + sentiment);
+                                        .map(sentiment -> new Response(answer, sentiment))
+                                        .flatMap(response -> {
+                                            Profile profile = Profile.getCurrentProfile();
+                                            String id = profile.getId();
+                                            AddResponseRequest request1 = new AddResponseRequest(id, response);
+                                            NetworkTask<AddResponseRequest> task1 = new NetworkTask<>();
+                                            return task1.execute(request1);
+                                        })
+                                        .subscribe(result -> {
+                                            Toast.makeText(AnswerActivity.this, R.string.data_question_answered_toast, Toast.LENGTH_SHORT).show();
+                                            finishOK();
                                         }, throwable -> {
-                                            Log.e("Logd-Error", throwable.getMessage());
+                                            finishOK();
                                         });
-
                             })
                             .update(question.getAnswers());
-
                 }, throwable -> {
                     Log.e("Logd", throwable.getMessage());
                 });
@@ -98,22 +107,6 @@ public class AnswerActivity extends BaseActivity {
                 });
 
         setOnActivityResult(this::finishOK);
-    }
-
-    private void analyseSentiment (String answer, boolean isMorning) {
-//        SentimentAPI
-//                .analyseSentiment(answer)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(value -> {
-//                    Response response = new Response(answer, value);
-//                    if (isMorning) {
-//                        DatabaseAPI.writeMorningResponse(AnswerActivity.this, response);
-//                    } else {
-//                        DatabaseAPI.writeEveningResponse(AnswerActivity.this, response);
-//                    }
-//                    Toast.makeText(AnswerActivity.this, R.string.data_question_answered_toast, Toast.LENGTH_SHORT).show();
-//                    finishOK();
-//                });
     }
 }
 
