@@ -6,26 +6,34 @@ package com.gabrielcoman.logd.activities.answer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.journal.JournalActivity;
 import com.gabrielcoman.logd.models.Question;
-import com.gabrielcoman.logd.models.Response;
-import com.gabrielcoman.logd.system.api.SentimentAPI;
+import com.gabrielcoman.logd.network.GetAnswers;
 import com.google.gson.Gson;
+import com.google.gson.annotations.Since;
 import com.jakewharton.rxbinding.view.RxView;
 
+import java.io.IOException;
+
+import gabrielcoman.com.rxdatasource.RxDataSource;
 import rx.Observable;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action2;
 
 public class AnswerActivity extends BaseActivity {
 
     private static final int SET_REQ_CODE = 112;
+
+    private RxDataSource dataSource = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,33 +41,43 @@ public class AnswerActivity extends BaseActivity {
         setContentView(R.layout.activity_answer);
 
         TextView questionText = (TextView) findViewById(R.id.QuestionTitle);
-        Button answerText1 = (Button) findViewById(R.id.NotificationAnswerText1);
-        Button answerText2 = (Button) findViewById(R.id.NotificationAnswerText2);
-        Button answerText3 = (Button) findViewById(R.id.NotificationAnswerText3);
+        ListView answers = (ListView) findViewById(R.id.AnswersList);
         Button journal = (Button) findViewById(R.id.JournalButton);
 
         Single<String> questionRx = getStringExtras("question");
         Single<Boolean> isMorningRx = getBooleanExtras("isMorning");
 
+        dataSource = RxDataSource.create(AnswerActivity.this);
+        dataSource
+                .bindTo(answers)
+                .customiseRow(R.layout.row_answer, String.class, (view, answer) -> {
+
+                    Log.d("Logd", "Answer: " + answer);
+
+                    ((TextView) view.findViewById(R.id.AnswerText)).setText(answer);
+                });
+
+        GetAnswers getAnswers = new GetAnswers();
+
         Observable.combineLatest(questionRx.toObservable(), isMorningRx.toObservable(), AnswerActivityExtra::new)
-                .subscribe(extra -> {
+                .flatMap(extra -> getAnswers.execute(extra.isMorning(), extra.getQuestion()).toObservable())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
 
-                    Question question = extra.getQuestion();
+                    try {
+                        String resp = response.body().string();
+                        Gson gson = new Gson();
+                        Question question = gson.fromJson(resp, Question.class);
 
-                    questionText.setText(question.getTitle());
-                    answerText1.setText(question.getAnswers().get(0));
-                    answerText2.setText(question.getAnswers().get(1));
-                    answerText3.setText(question.getAnswers().get(2));
+                        questionText.setText(question.getQuestion());
 
-                    RxView.clicks(answerText1)
-                            .subscribe(aVoid -> analyseSentiment(question.getAnswers().get(0), extra.isMorning()));
+                        dataSource.update(question.getAnswers());
 
-                    RxView.clicks(answerText2)
-                            .subscribe(aVoid -> analyseSentiment(question.getAnswers().get(1), extra.isMorning()));
-
-                    RxView.clicks(answerText3)
-                            .subscribe(aVoid -> analyseSentiment(question.getAnswers().get(2), extra.isMorning()));
-
+                    } catch (IOException e) {
+                        Log.d("Logd", e.getMessage());
+                    }
+                }, throwable -> {
+                    Log.d("Logd-Throwable", throwable.getMessage());
                 });
 
         RxView.clicks(journal)
@@ -91,15 +109,15 @@ public class AnswerActivity extends BaseActivity {
 }
 
 class AnswerActivityExtra {
-    private Question question;
+    private String question;
     private boolean isMorning;
 
     AnswerActivityExtra(String q, boolean isMorning) {
         this.isMorning = isMorning;
-        question = new Gson().fromJson(q, Question.class);
+        this.question = q;
     }
 
-    Question getQuestion() {
+    String  getQuestion() {
         return question;
     }
 

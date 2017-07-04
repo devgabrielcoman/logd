@@ -1,7 +1,5 @@
 package com.gabrielcoman.logd.network;
 
-import com.gabrielcoman.logd.models.Token;
-
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -11,15 +9,15 @@ import okhttp3.Request;
 import okhttp3.Response;
 import rx.Single;
 
-public class SendTokenData {
+public class GetAnswers {
 
-    private static final String base = "https://us-central1-logd-da13f.cloudfunctions.net/saveToken";
+    private static final String base = "https://us-central1-logd-da13f.cloudfunctions.net/getAnswers";
 
-    public Single<Response> execute (Token token) {
+    public Single<Response> execute(boolean isMorning, String question) {
 
         //
         // form url
-        String url = SendTokenData.base + "?fbId=" + token.getFbId() + "&token=" + token.getFirToken();
+        String url = GetAnswers.base + "?isMorning=" + isMorning + "&question=" + question;
 
         //
         // create the client

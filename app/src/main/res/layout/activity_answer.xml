@@ -49,50 +49,10 @@
         android:layout_below="@+id/title"
         android:layout_toRightOf="@+id/imagenotileft">
 
-        <Button
-            android:background="@android:color/transparent"
-            android:textAlignment="textStart"
-            android:id="@+id/NotificationAnswerText1"
-            android:text="Answer 1"
-            android:textColor="@color/secondary_text"
-            android:textAllCaps="false"
+        <ListView
+            android:id="@+id/AnswersList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:background="@color/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-
-        <Button
-            android:background="@android:color/transparent"
-            android:textAlignment="textStart"
-            android:id="@+id/NotificationAnswerText2"
-            android:text="Answer 2"
-            android:textColor="@color/secondary_text"
-            android:textAllCaps="false"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:background="@color/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-
-        <Button
-            android:background="@android:color/transparent"
-            android:textAlignment="textStart"
-            android:id="@+id/NotificationAnswerText3"
-            android:text="Answer 3"
-            android:textColor="@color/secondary_text"
-            android:textAllCaps="false"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:background="@color/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

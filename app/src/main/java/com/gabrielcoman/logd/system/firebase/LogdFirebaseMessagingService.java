@@ -12,15 +12,11 @@ import java.util.Map;
 
 public class LogdFirebaseMessagingService extends FirebaseMessagingService {
 
-    private NotificationCreator creator;
-
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
         Log.d("Logd", "From: " + remoteMessage.getFrom());
-
-
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
@@ -55,7 +51,7 @@ public class LogdFirebaseMessagingService extends FirebaseMessagingService {
             //
             // invoke notification
             Context context = getApplicationContext();
-            creator = new NotificationCreator();
+            NotificationCreator creator = new NotificationCreator();
             Notification notification = creator.createNotification(context, isMorning, question);
             creator.fireNotification(context, notification);
         }

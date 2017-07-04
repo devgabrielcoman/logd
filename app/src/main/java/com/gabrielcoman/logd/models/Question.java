@@ -9,16 +9,16 @@ import java.util.List;
 
 public class Question {
 
-    private String title;
+    private String question;
     private List<String> answers = new ArrayList<>();
 
-    public Question (String title, List<String> answers) {
-        this.title = title;
+    public Question (String question, List<String> answers) {
+        this.question = question;
         this.answers = answers;
     }
 
-    public String getTitle() {
-        return title;
+    public String getQuestion() {
+        return question;
     }
 
     public List<String> getAnswers() {
@@ -27,6 +27,6 @@ public class Question {
 
     @Override
     public int hashCode() {
-        return title.hashCode();
+        return question.hashCode();
     }
 }
