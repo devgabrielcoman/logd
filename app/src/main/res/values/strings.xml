@@ -17,6 +17,7 @@
     <string name="data_question_evening_title">How would you describe your day?</string>
 
     <string name="data_question_answered_toast">Log recorded.</string>
+    <string name="data_question_answered_toast_error">Log failed to record. Try again!</string>
 
     <string name="data_question_questions_set">Daily questions set</string>
     <string name="data_question_questions_stopped">Daily questions stopped</string>

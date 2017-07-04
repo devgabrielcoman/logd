@@ -86,11 +86,12 @@ public class AnswerActivity extends BaseActivity {
                                             NetworkTask<AddResponseRequest> task1 = new NetworkTask<>();
                                             return task1.execute(request1);
                                         })
+                                        .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(result -> {
-                                            Toast.makeText(AnswerActivity.this, R.string.data_question_answered_toast, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(AnswerActivity.this, R.string.data_question_answered_toast, Toast.LENGTH_LONG).show();
                                             finishOK();
                                         }, throwable -> {
-                                            finishOK();
+                                            Toast.makeText(AnswerActivity.this, R.string.data_question_answered_toast_error, Toast.LENGTH_LONG).show();
                                         });
                             })
                             .update(question.getAnswers());

@@ -5,6 +5,7 @@
 package com.gabrielcoman.logd.activities.journal;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.facebook.Profile;
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
+import com.gabrielcoman.logd.activities.answer.AnswerActivity;
 import com.gabrielcoman.logd.library.network.AddResponseRequest;
 import com.gabrielcoman.logd.library.network.GetSentimentRequest;
 import com.gabrielcoman.logd.library.network.NetworkTask;
@@ -19,6 +21,9 @@ import com.gabrielcoman.logd.library.parse.ParseRequest;
 import com.gabrielcoman.logd.library.parse.ParseSentimentTask;
 import com.gabrielcoman.logd.models.Response;
 import com.jakewharton.rxbinding.view.RxView;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 public class JournalActivity extends BaseActivity {
 
@@ -42,30 +47,33 @@ public class JournalActivity extends BaseActivity {
 
         RxView.clicks(save)
                 .map(aVoid -> journalText.getText().toString())
-                .toSingle()
-                .flatMap(answer -> {
+                .subscribe(answer -> {
+
                     GetSentimentRequest request = new GetSentimentRequest(answer);
                     NetworkTask<GetSentimentRequest> task = new NetworkTask<>();
-                    return task.execute(request);
-                })
-                .flatMap(payload -> {
-                    ParseRequest request1 = new ParseRequest(payload);
-                    ParseSentimentTask task1 = new ParseSentimentTask();
-                    return task1.execute(request1);
-                })
-                .map(sentiment -> new Response(journalText.getText().toString(), sentiment))
-                .flatMap(response -> {
-                    Profile profile = Profile.getCurrentProfile();
-                    String id = profile.getId();
-                    AddResponseRequest request1 = new AddResponseRequest(id, response);
-                    NetworkTask<AddResponseRequest> task1 = new NetworkTask<>();
-                    return task1.execute(request1);
-                })
-                .subscribe(result -> {
-                    Toast.makeText(JournalActivity.this, R.string.data_question_answered_toast, Toast.LENGTH_SHORT).show();
-                    finishOK();
-                }, throwable -> {
-                    finishOK();
+                    task.execute(request)
+                            .flatMap(payload -> {
+                                ParseRequest request1 = new ParseRequest(payload);
+                                ParseSentimentTask task1 = new ParseSentimentTask();
+                                return task1.execute(request1);
+                            })
+                            .map(sentiment -> new Response(answer, sentiment))
+                            .flatMap(response -> {
+                                Profile profile = Profile.getCurrentProfile();
+                                String id = profile.getId();
+                                AddResponseRequest request1 = new AddResponseRequest(id, response);
+                                NetworkTask<AddResponseRequest> task1 = new NetworkTask<>();
+                                return task1.execute(request1);
+                            })
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(result -> {
+                                Log.d("Logd", "Result is " + result);
+                                Toast.makeText(JournalActivity.this, R.string.data_question_answered_toast, Toast.LENGTH_SHORT).show();
+                                finishOK();
+                            }, throwable -> {
+                                Log.e("Logd-Error", throwable.getMessage());
+                                Toast.makeText(JournalActivity.this, R.string.data_question_answered_toast_error, Toast.LENGTH_LONG).show();
+                            });
                 });
     }
 }
