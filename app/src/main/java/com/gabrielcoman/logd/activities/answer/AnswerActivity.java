@@ -15,15 +15,19 @@ import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.journal.JournalActivity;
 import com.gabrielcoman.logd.library.network.GetAnswersRequest;
+import com.gabrielcoman.logd.library.network.GetSentimentRequest;
 import com.gabrielcoman.logd.library.network.NetworkTask;
 import com.gabrielcoman.logd.library.parse.ParseAnswersTask;
 import com.gabrielcoman.logd.library.parse.ParseRequest;
+import com.gabrielcoman.logd.library.parse.ParseSentimentTask;
 import com.jakewharton.rxbinding.view.RxView;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Action2;
+import rx.functions.Func1;
 
 public class AnswerActivity extends BaseActivity {
 
@@ -62,8 +66,22 @@ public class AnswerActivity extends BaseActivity {
                             .customiseRow(R.layout.row_answer, String.class, (view, answer) -> {
                                 ((TextView) view.findViewById(R.id.AnswerText)).setText(answer);
                             })
-                            .onRowClick(R.layout.row_answer, (Action2<Integer, String>) (integer, s) -> {
-                                // do nothing
+                            .onRowClick(R.layout.row_answer, (Action2<Integer, String>) (integer, answer) -> {
+
+                                GetSentimentRequest request = new GetSentimentRequest(answer);
+                                NetworkTask<GetSentimentRequest> task = new NetworkTask<>();
+                                task.execute(request)
+                                        .flatMap(payload -> {
+                                            ParseRequest request1 = new ParseRequest(payload);
+                                            ParseSentimentTask task1 = new ParseSentimentTask();
+                                            return task1.execute(request1);
+                                        })
+                                        .subscribe(sentiment -> {
+                                            Log.d("Logd", "Sentiment is " + sentiment);
+                                        }, throwable -> {
+                                            Log.e("Logd-Error", throwable.getMessage());
+                                        });
+
                             })
                             .update(question.getAnswers());
 

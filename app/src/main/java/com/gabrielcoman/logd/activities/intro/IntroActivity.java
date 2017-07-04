@@ -17,8 +17,6 @@ import com.gabrielcoman.logd.system.register.RegisterSystem;
 public class IntroActivity extends BaseActivity {
 
     RegisterSystem registerSystem;
-    SendTokenRequest request;
-    NetworkTask<SendTokenRequest> task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +28,8 @@ public class IntroActivity extends BaseActivity {
         registerSystem = new RegisterSystem();
         registerSystem.execute()
                 .flatMap(token -> {
-                    request = new SendTokenRequest(token);
-                    task = new NetworkTask<>();
+                    SendTokenRequest request = new SendTokenRequest(token);
+                    NetworkTask<SendTokenRequest> task = new NetworkTask<>();
                     return task.execute(request);
                 })
                 .subscribe(response -> Log.d("Logd", "Sent network data!"));
