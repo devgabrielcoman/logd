@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
 
-import com.facebook.Profile;
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class SetupActivity extends BaseActivity {
 
@@ -21,7 +21,8 @@ public class SetupActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
 
-        Profile profile = Profile.getCurrentProfile();
+        FirebaseMessaging.getInstance().subscribeToTopic("morning_questions");
+        FirebaseMessaging.getInstance().subscribeToTopic("evening_questions");
     }
 
     //
