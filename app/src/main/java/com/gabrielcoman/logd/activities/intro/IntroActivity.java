@@ -10,19 +10,15 @@ import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.login.LoginActivity;
 import com.gabrielcoman.logd.activities.main.MainActivity;
-import com.gabrielcoman.logd.models.Token;
-import com.gabrielcoman.logd.network.SendTokenData;
+import com.gabrielcoman.logd.library.network.NetworkTask;
+import com.gabrielcoman.logd.library.network.SendTokenRequest;
 import com.gabrielcoman.logd.system.register.RegisterSystem;
-
-import okhttp3.Response;
-import rx.Single;
-import rx.functions.Action1;
-import rx.functions.Func1;
 
 public class IntroActivity extends BaseActivity {
 
-    SendTokenData sendTokenData;
     RegisterSystem registerSystem;
+    SendTokenRequest request;
+    NetworkTask<SendTokenRequest> task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +28,12 @@ public class IntroActivity extends BaseActivity {
         //
         // send token data at start
         registerSystem = new RegisterSystem();
-        sendTokenData = new SendTokenData();
         registerSystem.execute()
-                .flatMap(token -> sendTokenData.execute(token))
+                .flatMap(token -> {
+                    request = new SendTokenRequest(token);
+                    task = new NetworkTask<>();
+                    return task.execute(request);
+                })
                 .subscribe(response -> Log.d("Logd", "Sent network data!"));
     }
 
