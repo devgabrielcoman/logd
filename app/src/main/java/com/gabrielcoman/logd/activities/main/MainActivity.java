@@ -15,6 +15,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,12 +24,14 @@ import com.facebook.Profile;
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.journal.JournalActivity;
+import com.gabrielcoman.logd.activities.setup.SetupActivity;
 import com.gabrielcoman.logd.library.network.GetResponsesRequest;
 import com.gabrielcoman.logd.library.network.NetworkTask;
 import com.gabrielcoman.logd.library.parse.ParseRequest;
 import com.gabrielcoman.logd.library.parse.ParseResponsesTask;
 import com.gabrielcoman.logd.models.Response;
 import com.jakewharton.rxbinding.view.RxView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,12 +50,15 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LogdLineChart lineChartView = (LogdLineChart) findViewById(R.id.Chart);
         FloatingActionButton journalButton = (FloatingActionButton) findViewById(R.id.JournalButton);
         ListView history = (ListView) findViewById(R.id.History);
+        ImageView profilePicture = (ImageView) findViewById(R.id.ProfilePicture);
+        TextView profileName = (TextView) findViewById(R.id.ProfileName);
+        TextView profileNoLogs = (TextView) findViewById(R.id.ProfileNrLogs);
 
-        //
-        // @// TODO: 05/07/2017 See if this will remain the same
+        Profile profile = Profile.getCurrentProfile();
+        String id = profile.getId();
+
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.MainToolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("");
@@ -70,7 +76,7 @@ public class MainActivity extends BaseActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle(getResources().getString(R.string.app_name));
+                    collapsingToolbarLayout.setTitle(profile.getName());
                     isShow = true;
                 } else if(isShow) {
                     collapsingToolbarLayout.setTitle(" ");
@@ -81,8 +87,16 @@ public class MainActivity extends BaseActivity {
 
         ViewCompat.setNestedScrollingEnabled(history, true);
 
-        Profile profile = Profile.getCurrentProfile();
-        String id = profile.getId();
+        //
+        // setup picture
+        Picasso.with(MainActivity.this)
+                .load(profile.getProfilePictureUri(260, 260))
+                .into(profilePicture);
+
+        //
+        // setup profile
+        profileName.setText(profile.getName());
+
         GetResponsesRequest request = new GetResponsesRequest(id);
         NetworkTask<GetResponsesRequest> task = new NetworkTask<>();
         task.execute(request)
@@ -118,24 +132,31 @@ public class MainActivity extends BaseActivity {
 
                     return finalList;
                 })
+                .map(models -> {
+                    List<Object> finalModels = new ArrayList<>();
+
+                    ChartViewModel chartViewModel = new ChartViewModel(models);
+                    finalModels.add(chartViewModel);
+
+                    for (ResponseGroupViewModel vm : models) {
+                        finalModels.add(vm);
+                    }
+
+                    return finalModels;
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(models -> {
 
-                    if (models.size() > 0) {
-                        int length = models.size() >= 7 ? 7 : models.size();
-                        String[] labels = new String[length];
-                        float[] values = new float[length];
-                        for (int i = length - 1; i >= 0; i--) {
-                            int t = (length - 1) - i;
-                            labels[t] = models.get(i).getDayAndMonth();
-                            values[t] = (float) models.get(i).getAverage();
-                        }
-
-                        lineChartView.setData(labels, values);
-                    }
-
+                    //
+                    // customise the table
                     RxDataSource.create(MainActivity.this)
                             .bindTo(history)
+                            .customiseRow(R.layout.row_graph, ChartViewModel.class, (view, model) -> {
+
+                                LogdLineChart logdLineChart = (LogdLineChart) view.findViewById(R.id.Chart);
+                                logdLineChart.setData(model.getLabels(), model.getValues());
+
+                            })
                             .customiseRow(R.layout.row_history, ResponseGroupViewModel.class, (view, model) -> {
 
                                 ((TextView) view.findViewById(R.id.DayOfMonth)).setText(model.getDayOfMonth());
@@ -157,7 +178,6 @@ public class MainActivity extends BaseActivity {
                                     content.setText(vm.getAnswer());
                                     holder.addView(content);
                                 }
-
                             })
                             .update(models);
 

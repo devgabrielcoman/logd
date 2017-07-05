@@ -33,7 +33,7 @@ public class NotificationCreator {
         stackBuilder.addNextIntent(intent);
 
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        RemoteViews smallContent = new RemoteViews(context.getPackageName(), R.layout.notification_custom_small);
+        RemoteViews smallContent = new RemoteViews(context.getPackageName(), R.layout.notification);
         smallContent.setTextViewText(R.id.QuestionTitle, question);
 
         return new NotificationCompat.Builder(context)
