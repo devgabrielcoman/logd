@@ -5,33 +5,11 @@
 
     <string name="app_name">Logd</string>
 
-    <string name="data_question_general_answer_journal">Write to journal</string>
-
     <string name="notification_ticker_title">New message from Logd</string>
-    <string name="notification_title">Logd question</string>
 
     <string name="activity_journal_save">Save</string>
     <string name="activity_journal_placeholder">Share your thoughts &#8230;</string>
 
-    <string name="data_question_morning_title">What best describes your morning?</string>
-    <string name="data_question_evening_title">How would you describe your day?</string>
-
     <string name="data_question_answered_toast">Log recorded.</string>
     <string name="data_question_answered_toast_error">Log failed to record. Try again!</string>
-
-    <string name="data_question_questions_set">Daily questions set</string>
-    <string name="data_question_questions_stopped">Daily questions stopped</string>
-
-    <string name="data_question_questions_set_title">Set daily questions</string>
-    <string name="data_question_questions_stop_title">Stop daily questions</string>
-
-    <string name="permission_first_title">Hey!</string>
-    <string name="permission_first_message">Logd requires you to grant it the Access Fine Location permission from your phone. This is needed in order to send you just two questions a day - one in the morning and one in the evening - to see how your day has been.</string>
-    <string name="permission_first_ok">Accept</string>
-    <string name="permission_first_nok">Maybe later</string>
-
-    <string name="permission_settings_title">Hey!</string>
-    <string name="permission_settings_message">Logd requires you to grant it the Access Fine Location permission from your phone. This is needed in order to send you just two questions a day - one in the morning and one in the evening - to see how your day has been. You\'ll be redirected to the app\'s Setting Page to manually grant it this permission. After that you can retry to enable questions.</string>
-    <string name="permission_settings_ok">Take me there</string>
-    <string name="permission_settings_nok">Maybe later</string>
 </resources>
