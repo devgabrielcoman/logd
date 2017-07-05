@@ -28,7 +28,7 @@
 
         <TextView
             android:id="@+id/QuestionTitle"
-            android:text="Are you feeling energised this morning?"
+            android:text=""
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/primary_text" />

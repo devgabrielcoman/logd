@@ -5,13 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.facebook.AccessToken;
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.login.LoginActivity;
 import com.gabrielcoman.logd.activities.main.MainActivity;
 import com.gabrielcoman.logd.library.network.NetworkTask;
 import com.gabrielcoman.logd.library.network.SendTokenRequest;
+import com.gabrielcoman.logd.library.profile.CheckLoginRequest;
+import com.gabrielcoman.logd.library.profile.CheckLoginTask;
 import com.gabrielcoman.logd.library.system.ObtainTokenRequest;
 import com.gabrielcoman.logd.library.system.ObtainTokenTask;
 
@@ -42,19 +43,17 @@ public class IntroActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
 
-        AccessToken token = AccessToken.getCurrentAccessToken();
-
         //
-        // goto Main
-        if (token != null) {
-            Intent intent = new Intent(IntroActivity.this, MainActivity.class);
-            startActivity(intent);
-        }
-        //
-        // goto Login
-        else {
-            Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
-            startActivity(intent);
-        }
+        // check to see if user is logged in or not
+        CheckLoginRequest request = new CheckLoginRequest();
+        CheckLoginTask task = new CheckLoginTask();
+        task.execute(request)
+                .subscribe(aVoid -> {
+                    Intent intent = new Intent(IntroActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }, throwable -> {
+                    Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                });
     }
 }

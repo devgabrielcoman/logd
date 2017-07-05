@@ -17,6 +17,10 @@ import com.gabrielcoman.logd.activities.setup.SetupActivity;
 
 import java.util.Arrays;
 
+import tv.superawesome.lib.sautils.SAAlert;
+import tv.superawesome.lib.sautils.SAAlertInterface;
+import tv.superawesome.lib.sautils.SAUtils;
+
 public class LoginActivity extends BaseActivity implements FacebookCallback<LoginResult> {
 
     CallbackManager callbackManager;
@@ -46,12 +50,16 @@ public class LoginActivity extends BaseActivity implements FacebookCallback<Logi
     //
     // start the login action
     public void loginAction(View view) {
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+        login();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // FacebookCallback<LoginResult> implementation
+    // Business Logic
     ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    void login () {
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+    }
 
     @Override
     public void onSuccess(LoginResult loginResult) {
@@ -66,6 +74,20 @@ public class LoginActivity extends BaseActivity implements FacebookCallback<Logi
 
     @Override
     public void onError(FacebookException error) {
-        // @todo: show error
+        SAAlert.getInstance().show(
+                this,
+                getString(R.string.activity_login_error_title),
+                getString(R.string.activity_login_error_message),
+                getString(R.string.activity_login_error_tryagain),
+                getString(R.string.activity_login_error_cancel),
+                false,
+                0, (i, s) -> {
+
+                    //
+                    // try again button
+                    if (i == 0 ){
+                        login();
+                    }
+                });
     }
 }

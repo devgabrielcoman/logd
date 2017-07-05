@@ -49,6 +49,7 @@ dependencies {
     compile 'com.google.guava:guava:22.0-android'
     compile 'com.diogobernardino:williamchart:2.4.0'
     compile 'tv.superawesome.lib.sautils:sautils:0.3.4'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile ('com.facebook.android:facebook-android-sdk:[4,5)', {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'

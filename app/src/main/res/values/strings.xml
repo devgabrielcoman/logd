@@ -1,15 +1,29 @@
 <resources>
 
+    <!-- facebook metadata -->
     <string name="facebook_app_id">453735794981322</string>
     <string name="fb_login_protocol_scheme">fb453735794981322</string>
 
+    <!-- general -->
     <string name="app_name">Logd</string>
 
+    <!-- notifications -->
     <string name="notification_ticker_title">New message from Logd</string>
 
+    <!-- Login Activity -->
+    <string name="activity_login_error_title">Hey!</string>
+    <string name="activity_login_error_message">Seems we were unable to log you in using Facebook!</string>
+    <string name="activity_login_error_cancel">Cancel</string>
+    <string name="activity_login_error_tryagain">Try Again</string>
+
+    <!-- Setup Activity -->
+    <string name="activity_setup_button_title">Got it!</string>
+
+    <!-- journal Activity -->
     <string name="activity_journal_save">Save</string>
     <string name="activity_journal_placeholder">Share your thoughts &#8230;</string>
 
+    <!-- toast -->
     <string name="data_question_answered_toast">Log recorded.</string>
     <string name="data_question_answered_toast_error">Log failed to record. Try again!</string>
 </resources>
