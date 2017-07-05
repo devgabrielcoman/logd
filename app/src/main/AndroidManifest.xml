@@ -38,16 +38,9 @@
         <!-- firebase -->
 
         <service
-            android:name="com.gabrielcoman.logd.system.firebase.LogdFirebaseMessagingService">
+            android:name="com.gabrielcoman.logd.library.notification.LogdFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-
-        <service
-            android:name="com.gabrielcoman.logd.system.firebase.LogdFirebaseInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
 

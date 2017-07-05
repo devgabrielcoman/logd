@@ -1,10 +1,9 @@
-package com.gabrielcoman.logd.system.firebase;
+package com.gabrielcoman.logd.library.notification;
 
 import android.app.Notification;
 import android.content.Context;
-import android.util.Log;
 
-import com.gabrielcoman.logd.system.alarm.NotificationCreator;
+import com.gabrielcoman.logd.library.notification.NotificationCreator;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -15,8 +14,6 @@ public class LogdFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-
-        Log.d("Logd", "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {

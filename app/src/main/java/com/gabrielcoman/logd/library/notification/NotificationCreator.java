@@ -1,4 +1,4 @@
-package com.gabrielcoman.logd.system.alarm;
+package com.gabrielcoman.logd.library.notification;
 
 import android.app.Notification;
 import android.app.NotificationManager;
