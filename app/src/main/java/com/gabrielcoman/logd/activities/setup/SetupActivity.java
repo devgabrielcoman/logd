@@ -45,12 +45,14 @@ public class SetupActivity extends BaseActivity {
                     // setup picture
                     Picasso.with(SetupActivity.this)
                             .load(profile.getProfilePictureUri(260, 260))
+                            .placeholder(R.drawable.ic_user_default)
+                            .error(R.drawable.ic_user_default)
                             .transform(new CropCircleTransformation())
                             .into(profileImage);
 
                     //
                     // setup profile
-                    profileName.setText(profile.getName());
+                    profileName.setText(getString(R.string.activity_setup_welcome_user, profile.getName()));
 
                 }, throwable -> {
                     Log.e("Logd", "Error is " + throwable.getMessage());

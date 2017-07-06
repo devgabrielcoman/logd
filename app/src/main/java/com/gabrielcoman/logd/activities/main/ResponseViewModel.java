@@ -4,6 +4,7 @@
  */
 package com.gabrielcoman.logd.activities.main;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.gabrielcoman.logd.models.Response;
@@ -56,7 +57,7 @@ class ResponseViewModel implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(@NonNull Object o) {
         ResponseViewModel r = (ResponseViewModel) o;
         return hourTimestamp > r.hourTimestamp ? -1 : 1;
     }

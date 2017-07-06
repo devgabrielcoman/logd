@@ -1,5 +1,9 @@
 package com.gabrielcoman.logd.activities.main;
 
+import android.support.annotation.NonNull;
+
+import com.gabrielcoman.logd.models.Response;
+
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -49,12 +53,12 @@ class ResponseGroupViewModel implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(@NonNull Object o) {
         ResponseGroupViewModel r = (ResponseGroupViewModel) o;
         return dayTimestamp > r.dayTimestamp ? -1 : 1;
     }
 
-    public double getAverage() {
+    double getAverage() {
         return average;
     }
 }

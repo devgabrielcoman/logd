@@ -7,7 +7,7 @@
     <!-- general -->
     <string name="app_name">Logd</string>
 
-    <!-- notifications -->
+    <!-- Notifications -->
     <string name="notification_ticker_title">New message from Logd</string>
 
     <!-- Login Activity -->
@@ -19,6 +19,8 @@
 
     <!-- Setup Activity -->
     <string name="activity_setup_button_title">Got it!</string>
+    <string name="activity_setup_welcome_default">Welcome!</string>
+    <string name="activity_setup_welcome_user">Welcome, %1$s!</string>
 
     <!-- journal Activity -->
     <string name="activity_journal_save">Save</string>

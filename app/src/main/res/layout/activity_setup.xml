@@ -16,6 +16,7 @@
         android:id="@+id/ProfilePicture"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
+        android:src="@drawable/ic_user_default"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:scaleType="fitXY"/>
@@ -23,7 +24,7 @@
     <TextView
         android:layout_below="@+id/ProfilePicture"
         android:id="@+id/ProfileName"
-        android:text="Liviu Coman"
+        android:text="@string/activity_setup_welcome_default"
         android:textSize="26sp"
         android:textStyle="bold"
         android:textColor="@color/colorWhite"

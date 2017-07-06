@@ -43,6 +43,4 @@ public class LogdLineChart extends LineChartView {
         addData(list);
         show();
     }
-
-
 }
