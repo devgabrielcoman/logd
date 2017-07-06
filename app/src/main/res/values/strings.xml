@@ -11,6 +11,7 @@
     <string name="notification_ticker_title">New message from Logd</string>
 
     <!-- Login Activity -->
+    <string name="activity_login_button_title">Login with Facebook</string>
     <string name="activity_login_error_title">Hey!</string>
     <string name="activity_login_error_message">Seems we were unable to log you in using Facebook!</string>
     <string name="activity_login_error_cancel">Cancel</string>

@@ -16,14 +16,21 @@ import com.facebook.Profile;
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.main.MainActivity;
+import com.gabrielcoman.logd.aux.Aux;
 import com.gabrielcoman.logd.library.notification.SubscribeToTopicRequest;
 import com.gabrielcoman.logd.library.notification.SubscribeToTopicTask;
 import com.gabrielcoman.logd.library.profile.GetProfileRequest;
 import com.gabrielcoman.logd.library.profile.GetProfileTask;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.jakewharton.rxbinding.view.RxView;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.squareup.picasso.Picasso;
 
+import java.util.Set;
+
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import rx.Single;
 import rx.functions.Action1;
 import rx.functions.Func3;
@@ -53,6 +60,7 @@ public class SetupActivity extends BaseActivity {
                     // setup picture
                     Picasso.with(SetupActivity.this)
                             .load(profile.getProfilePictureUri(260, 260))
+                            .transform(new CropCircleTransformation())
                             .into(profileImage);
 
                     //

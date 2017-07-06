@@ -25,6 +25,7 @@ import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.journal.JournalActivity;
 import com.gabrielcoman.logd.activities.setup.SetupActivity;
+import com.gabrielcoman.logd.aux.Aux;
 import com.gabrielcoman.logd.library.network.GetResponsesRequest;
 import com.gabrielcoman.logd.library.network.NetworkTask;
 import com.gabrielcoman.logd.library.parse.ParseRequest;
@@ -172,7 +173,7 @@ public class MainActivity extends BaseActivity {
                                     holder.addView(date);
 
                                     TextView content = new TextView(MainActivity.this);
-                                    content.setPadding(0, 0, (int)dipToPixels(MainActivity.this, 12), (int)dipToPixels(MainActivity.this, 12));
+                                    content.setPadding(0, 0, (int)Aux.dipToPixels(MainActivity.this, 12), (int)Aux.dipToPixels(MainActivity.this, 12));
                                     content.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                                     content.setTextColor(getResources().getColor(R.color.secondary_text));
                                     content.setText(vm.getAnswer());
@@ -190,10 +191,5 @@ public class MainActivity extends BaseActivity {
                     Intent journalIntent = new Intent(MainActivity.this, JournalActivity.class);
                     MainActivity.this.startActivityForResult(journalIntent, SET_REQ_CODE);
                 });
-    }
-
-    public float dipToPixels(Context context, float dipValue) {
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
     }
 }

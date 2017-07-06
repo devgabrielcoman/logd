@@ -3,6 +3,7 @@ package com.gabrielcoman.logd.activities.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -24,11 +25,14 @@ import tv.superawesome.lib.sautils.SAUtils;
 public class LoginActivity extends BaseActivity implements FacebookCallback<LoginResult> {
 
     CallbackManager callbackManager;
+    Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        loginButton = (Button) findViewById(R.id.LoginButton);
 
         //
         // initialize Facebook SDK
@@ -58,18 +62,20 @@ public class LoginActivity extends BaseActivity implements FacebookCallback<Logi
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     void login () {
+        loginButton.setEnabled(false);
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
     }
 
     @Override
     public void onSuccess(LoginResult loginResult) {
+        loginButton.setEnabled(true);
         Intent intent = new Intent(LoginActivity.this, SetupActivity.class);
         startActivity(intent);
     }
 
     @Override
     public void onCancel() {
-        // do nothing
+        loginButton.setEnabled(true);
     }
 
     @Override
@@ -82,6 +88,8 @@ public class LoginActivity extends BaseActivity implements FacebookCallback<Logi
                 getString(R.string.activity_login_error_cancel),
                 false,
                 0, (i, s) -> {
+
+                    loginButton.setEnabled(true);
 
                     //
                     // try again button
