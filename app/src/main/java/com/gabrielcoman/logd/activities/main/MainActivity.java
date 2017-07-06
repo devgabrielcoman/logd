@@ -4,16 +4,13 @@
  */
 package com.gabrielcoman.logd.activities.main;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,13 +21,11 @@ import com.facebook.Profile;
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.journal.JournalActivity;
-import com.gabrielcoman.logd.activities.setup.SetupActivity;
 import com.gabrielcoman.logd.aux.Aux;
 import com.gabrielcoman.logd.library.network.GetResponsesRequest;
 import com.gabrielcoman.logd.library.network.NetworkTask;
 import com.gabrielcoman.logd.library.parse.ParseRequest;
 import com.gabrielcoman.logd.library.parse.ParseResponsesTask;
-import com.gabrielcoman.logd.models.Response;
 import com.jakewharton.rxbinding.view.RxView;
 import com.squareup.picasso.Picasso;
 
@@ -40,9 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 
 public class MainActivity extends BaseActivity {
 

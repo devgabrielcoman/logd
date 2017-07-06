@@ -28,7 +28,6 @@
 
         <TextView
             android:id="@+id/QuestionTitle"
-            android:text="Are you feeling energised this morning?"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -38,10 +37,9 @@
             android:background="@color/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
-
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,12 +47,21 @@
         android:layout_below="@+id/title"
         android:layout_toRightOf="@+id/imagenotileft">
 
+        <ProgressBar
+            android:layout_margin="30dp"
+            android:id="@+id/Spinner"
+            android:visibility="visible"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
         <ListView
             android:id="@+id/AnswersList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/journalBtn"
@@ -74,12 +81,5 @@
             android:layout_height="match_parent" />
 
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/imagenotiright"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:padding="10dp" />
 
 </RelativeLayout>

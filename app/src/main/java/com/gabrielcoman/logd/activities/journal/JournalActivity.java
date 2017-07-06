@@ -6,24 +6,30 @@ package com.gabrielcoman.logd.activities.journal;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.facebook.Profile;
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
-import com.gabrielcoman.logd.activities.answer.AnswerActivity;
 import com.gabrielcoman.logd.library.network.AddResponseRequest;
 import com.gabrielcoman.logd.library.network.GetSentimentRequest;
 import com.gabrielcoman.logd.library.network.NetworkTask;
 import com.gabrielcoman.logd.library.parse.ParseRequest;
 import com.gabrielcoman.logd.library.parse.ParseSentimentTask;
+import com.gabrielcoman.logd.library.profile.GetProfileRequest;
+import com.gabrielcoman.logd.library.profile.GetProfileTask;
 import com.gabrielcoman.logd.models.Response;
 import com.jakewharton.rxbinding.view.RxView;
 
+import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.functions.Func2;
 
 public class JournalActivity extends BaseActivity {
 
@@ -38,14 +44,15 @@ public class JournalActivity extends BaseActivity {
             getSupportActionBar().setTitle("");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         Button save = (Button) findViewById(R.id.JournalSave);
+        ProgressBar spinner = (ProgressBar) findViewById(R.id.Spinner);
         EditText journalText = (EditText) findViewById(R.id.JournalText);
 
         RxView.clicks(save)
+                .doOnNext(aVoid -> spinner.setVisibility(View.VISIBLE))
                 .map(aVoid -> journalText.getText().toString())
                 .subscribe(answer -> {
 
@@ -59,19 +66,23 @@ public class JournalActivity extends BaseActivity {
                             })
                             .map(sentiment -> new Response(answer, sentiment))
                             .flatMap(response -> {
-                                Profile profile = Profile.getCurrentProfile();
-                                String id = profile.getId();
-                                AddResponseRequest request1 = new AddResponseRequest(id, response);
+
+                                GetProfileRequest request1 = new GetProfileRequest();
+                                GetProfileTask task1 = new GetProfileTask();
+
+                                return Single.zip(Single.just(response), task1.execute(request1), (response1, profile) -> new AddResponseRequest(profile.getId(), response1));
+                            })
+                            .flatMap(addResponseRequest -> {
                                 NetworkTask<AddResponseRequest> task1 = new NetworkTask<>();
-                                return task1.execute(request1);
+                                return task1.execute(addResponseRequest);
                             })
                             .observeOn(AndroidSchedulers.mainThread())
+                            .doOnSuccess(s -> spinner.setVisibility(View.GONE))
+                            .doOnError(throwable -> spinner.setVisibility(View.GONE))
                             .subscribe(result -> {
-                                Log.d("Logd", "Result is " + result);
                                 Toast.makeText(JournalActivity.this, R.string.data_question_answered_toast, Toast.LENGTH_SHORT).show();
                                 finishOK();
                             }, throwable -> {
-                                Log.e("Logd-Error", throwable.getMessage());
                                 Toast.makeText(JournalActivity.this, R.string.data_question_answered_toast_error, Toast.LENGTH_LONG).show();
                             });
                 });

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     tools:context="com.gabrielcoman.logd.activities.journal.JournalActivity"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -38,6 +38,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <EditText
+        android:layout_marginTop="?attr/actionBarSize"
         android:id="@+id/JournalText"
         android:inputType="textMultiLine"
         android:lines="8"
@@ -51,4 +52,13 @@
         android:layout_width="fill_parent"
         android:scrollbars="vertical" />
 
-</LinearLayout>
+    <ProgressBar
+        android:layout_margin="30dp"
+        android:id="@+id/Spinner"
+        android:visibility="invisible"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>
