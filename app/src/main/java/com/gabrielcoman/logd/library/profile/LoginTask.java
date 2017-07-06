@@ -10,9 +10,9 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.gabrielcoman.logd.library.Task;
 
-import rx.Single;
+import rx.Observable;
 
-public class LoginTask implements Task<LoginRequest, String> {
+public class LoginTask implements Task<LoginRequest, Observable<Void>> {
 
     private Activity activity;
     private CallbackManager manager;
@@ -23,19 +23,19 @@ public class LoginTask implements Task<LoginRequest, String> {
     }
 
     @Override
-    public Single<String> execute(LoginRequest input) {
+    public Observable<Void> execute(LoginRequest input) {
 
-        return Single.create(subscriber -> {
+        return Observable.create(subscriber -> {
 
             LoginManager.getInstance().registerCallback(manager, new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
-                    subscriber.onSuccess(loginResult.getAccessToken().getToken());
+                    subscriber.onCompleted();
                 }
 
                 @Override
                 public void onCancel() {
-                    subscriber.onSuccess(null);
+                    subscriber.onNext(null);
                 }
 
                 @Override
@@ -47,6 +47,7 @@ public class LoginTask implements Task<LoginRequest, String> {
             //
             // start login process
             LoginManager.getInstance().logInWithReadPermissions(activity, input.permissions);
+
         });
     }
 

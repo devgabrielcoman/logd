@@ -31,27 +31,23 @@ public class LoginActivity extends BaseActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 
+        //
+        // create request & task
         LoginRequest request = new LoginRequest();
         LoginTask task = new LoginTask(LoginActivity.this);
 
+        //
+        // handle clicks
         RxView.clicks(loginButton)
                 .subscribe(aVoid -> {
 
                     loginButton.setEnabled(false);
 
                     task.execute(request)
-                            .subscribe(token -> {
-
-                                if (token != null) {
-                                    Intent intent = new Intent(LoginActivity.this, SetupActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    loginButton.setEnabled(true);
-                                }
-
-                            }, throwable -> {
-
+                            .doOnError(throwable -> loginButton.setEnabled(true))
+                            .subscribe(aVoid1 -> {
                                 loginButton.setEnabled(true);
+                            }, throwable -> {
 
                                 SAAlert.getInstance().show(
                                         this,
@@ -63,6 +59,9 @@ public class LoginActivity extends BaseActivity {
                                         0,
                                         null);
 
+                            }, () -> {
+                                Intent intent = new Intent(LoginActivity.this, SetupActivity.class);
+                                startActivity(intent);
                             });
                 });
 

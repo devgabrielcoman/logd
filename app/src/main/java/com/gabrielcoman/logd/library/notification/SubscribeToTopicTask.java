@@ -5,7 +5,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import rx.Single;
 
-public class SubscribeToTopicTask implements Task <SubscribeToTopicRequest, Void> {
+public class SubscribeToTopicTask implements Task <SubscribeToTopicRequest, Single<Void>> {
 
     @Override
     public Single<Void> execute(SubscribeToTopicRequest input) {

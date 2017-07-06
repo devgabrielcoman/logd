@@ -5,7 +5,7 @@ import com.gabrielcoman.logd.library.Task;
 
 import rx.Single;
 
-public class GetProfileTask implements Task <GetProfileRequest, Profile> {
+public class GetProfileTask implements Task <GetProfileRequest, Single<Profile>> {
 
     @Override
     public Single<Profile> execute(GetProfileRequest getProfileRequest) {

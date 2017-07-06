@@ -5,7 +5,7 @@ import com.gabrielcoman.logd.library.Task;
 
 import rx.Single;
 
-public class CheckLoginTask implements Task <CheckLoginRequest, Void> {
+public class CheckLoginTask implements Task <CheckLoginRequest, Single<Void>> {
 
     @Override
     public Single<Void> execute(CheckLoginRequest input) {

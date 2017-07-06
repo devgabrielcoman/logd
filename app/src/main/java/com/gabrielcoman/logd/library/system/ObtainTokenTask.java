@@ -10,7 +10,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import rx.Single;
 
-public class ObtainTokenTask implements Task <ObtainTokenRequest, Token> {
+public class ObtainTokenTask implements Task <ObtainTokenRequest, Single<Token>> {
 
     private final int DELAY = 1000;
     private Handler handler = new Handler();

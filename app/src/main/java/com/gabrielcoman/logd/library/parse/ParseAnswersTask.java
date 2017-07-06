@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 
 import rx.Single;
 
-public class ParseAnswersTask implements Task <ParseRequest, Question> {
+public class ParseAnswersTask implements Task <ParseRequest, Single<Question>> {
 
     @Override
     public Single<Question> execute(ParseRequest input) {

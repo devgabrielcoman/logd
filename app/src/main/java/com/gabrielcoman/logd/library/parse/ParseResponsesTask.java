@@ -7,19 +7,36 @@ import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.List;
 
+import rx.Observable;
 import rx.Single;
 
-
-public class ParseResponsesTask implements Task<ParseRequest, List<Response>> {
+public class ParseResponsesTask implements Task<ParseRequest, Observable<Response>> {
 
     @Override
-    public Single<List<Response>> execute(ParseRequest input) {
-        return Single.create(subscriber -> {
+    public Observable<Response> execute(ParseRequest input) {
+        return Observable.create(subscriber -> {
             try {
+                //
+                // create GSON object
                 Gson gson = new Gson();
+
+                //
+                // parse as static array
                 Response[] responses = gson.fromJson(input.contents, Response[].class);
-                subscriber.onSuccess(Arrays.asList(responses));
+
+                //
+                // turn to list
+                List<Response> result = Arrays.asList(responses);
+
+                //
+                // send out events
+                for (Response res : result) {
+                    subscriber.onNext(res);
+                }
+                subscriber.onCompleted();
             } catch (Exception e) {
+                //
+                // send out error
                 subscriber.onError(e);
             }
         });

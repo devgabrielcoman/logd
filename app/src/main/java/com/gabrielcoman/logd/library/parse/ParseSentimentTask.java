@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 
 import rx.Single;
 
-public class ParseSentimentTask implements Task<ParseRequest, Double> {
+public class ParseSentimentTask implements Task<ParseRequest, Single<Double>> {
 
     @Override
     public Single<Double> execute(ParseRequest input) {

@@ -40,7 +40,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 
 public class MainActivity extends BaseActivity {
 
@@ -101,18 +103,14 @@ public class MainActivity extends BaseActivity {
         GetResponsesRequest request = new GetResponsesRequest(id);
         NetworkTask<GetResponsesRequest> task = new NetworkTask<>();
         task.execute(request)
-                .flatMap(responses -> {
-                    ParseRequest request1 = new ParseRequest(responses);
+                .toObservable()
+                .flatMap(rawData -> {
+                    ParseRequest request1 = new ParseRequest(rawData);
                     ParseResponsesTask task1 = new ParseResponsesTask();
                     return task1.execute(request1);
                 })
-                .map(responses -> {
-                    List<ResponseViewModel> viewModels = new ArrayList<>();
-                    for (Response r: responses) {
-                        viewModels.add(new ResponseViewModel(r));
-                    }
-                    return viewModels;
-                })
+                .map(ResponseViewModel::new)
+                .toList()
                 .map(models -> {
                     HashMap<Long, List<ResponseViewModel>> map = new HashMap<>();
                     for (ResponseViewModel vm : models) {

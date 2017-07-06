@@ -18,7 +18,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import rx.Single;
 
-public class NetworkTask <Input extends NetworkRequest> implements Task <Input, String> {
+public class NetworkTask <Input extends NetworkRequest> implements Task <Input, Single<String>> {
 
     @Override
     public Single<String> execute(Input input) {
