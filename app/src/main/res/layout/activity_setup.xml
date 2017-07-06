@@ -3,8 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorWhite"
+    android:background="@color/primary"
     tools:context="com.gabrielcoman.logd.activities.setup.SetupActivity">
+
+    <ImageView
+        android:src="@drawable/bg"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <ImageView
         android:id="@+id/ProfilePicture"
@@ -17,6 +23,11 @@
     <TextView
         android:layout_below="@+id/ProfilePicture"
         android:id="@+id/ProfileName"
+        android:text="Liviu Coman"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:textAlignment="center"
         android:layout_height="40dp" />
@@ -24,7 +35,9 @@
     <Button
         android:layout_alignParentBottom="true"
         android:id="@+id/GotItButton"
+        style="@style/ActionButtonStyle"
+        android:layout_margin="40dp"
         android:text="@string/activity_setup_button_title"
         android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:layout_height="36dp"/>
 </RelativeLayout>

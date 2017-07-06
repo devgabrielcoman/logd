@@ -2,28 +2,20 @@ package com.gabrielcoman.logd.activities.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Button;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
 import com.gabrielcoman.logd.activities.setup.SetupActivity;
-
-import java.util.Arrays;
+import com.gabrielcoman.logd.library.profile.LoginRequest;
+import com.gabrielcoman.logd.library.profile.LoginTask;
+import com.jakewharton.rxbinding.view.RxView;
 
 import tv.superawesome.lib.sautils.SAAlert;
-import tv.superawesome.lib.sautils.SAAlertInterface;
-import tv.superawesome.lib.sautils.SAUtils;
 
-public class LoginActivity extends BaseActivity implements FacebookCallback<LoginResult> {
-
-    CallbackManager callbackManager;
+public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,63 +23,49 @@ public class LoginActivity extends BaseActivity implements FacebookCallback<Logi
         setContentView(R.layout.activity_login);
 
         //
+        // get elements
+        Button loginButton = (Button) findViewById(R.id.LoginButton);
+
+        //
         // initialize Facebook SDK
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 
-        //
-        // create the callback manager and register a login callback
-        callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(callbackManager, this);
-    }
+        LoginRequest request = new LoginRequest();
+        LoginTask task = new LoginTask(LoginActivity.this);
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
+        RxView.clicks(loginButton)
+                .subscribe(aVoid -> {
 
-    //
-    // start the login action
-    public void loginAction(View view) {
-        login();
-    }
+                    loginButton.setEnabled(false);
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Business Logic
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+                    task.execute(request)
+                            .subscribe(token -> {
 
-    void login () {
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-    }
+                                if (token != null) {
+                                    Intent intent = new Intent(LoginActivity.this, SetupActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    loginButton.setEnabled(true);
+                                }
 
-    @Override
-    public void onSuccess(LoginResult loginResult) {
-        Intent intent = new Intent(LoginActivity.this, SetupActivity.class);
-        startActivity(intent);
-    }
+                            }, throwable -> {
 
-    @Override
-    public void onCancel() {
-        // do nothing
-    }
+                                loginButton.setEnabled(true);
 
-    @Override
-    public void onError(FacebookException error) {
-        SAAlert.getInstance().show(
-                this,
-                getString(R.string.activity_login_error_title),
-                getString(R.string.activity_login_error_message),
-                getString(R.string.activity_login_error_tryagain),
-                getString(R.string.activity_login_error_cancel),
-                false,
-                0, (i, s) -> {
+                                SAAlert.getInstance().show(
+                                        this,
+                                        getString(R.string.activity_login_error_title),
+                                        getString(R.string.activity_login_error_message),
+                                        getString(R.string.activity_login_error_tryagain),
+                                        null,
+                                        false,
+                                        0,
+                                        null);
 
-                    //
-                    // try again button
-                    if (i == 0 ){
-                        login();
-                    }
+                            });
                 });
+
+        setOnActivityResult(task::callbackResult);
     }
 }

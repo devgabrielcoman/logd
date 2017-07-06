@@ -9,21 +9,32 @@ import rx.Observable;
 import rx.Single;
 import rx.SingleSubscriber;
 import rx.functions.Action0;
+import rx.functions.Action3;
 
 public class BaseActivity extends AppCompatActivity {
 
     private Action0 onActivityResult = null;
+    private Action3<Integer, Integer, Intent> onActivityResultWithParams = null;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (onActivityResult != null && resultCode == RESULT_OK) {
             onActivityResult.call();
+        }
+
+        if (onActivityResultWithParams != null) {
+            onActivityResultWithParams.call(requestCode, resultCode, data);
         }
     }
 
     public void setOnActivityResult(Action0 onActivityResult) {
         this.onActivityResult = onActivityResult;
+    }
+
+    public void setOnActivityResult(Action3<Integer, Integer, Intent> onActivityResult) {
+        this.onActivityResultWithParams = onActivityResult;
     }
 
     public void finishOK () {
