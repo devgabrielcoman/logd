@@ -2,8 +2,10 @@ package com.gabrielcoman.logd.activities.intro;
 
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.BaseActivity;
@@ -25,6 +27,12 @@ public class IntroActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
+
+        //
+        // set font
+        TextView mainText = (TextView) findViewById(R.id.MainText);
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/junegull.ttf");
+        mainText.setTypeface(typeface);
 
         //
         // send token data at start

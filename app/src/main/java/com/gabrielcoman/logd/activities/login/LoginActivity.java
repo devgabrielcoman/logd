@@ -1,8 +1,10 @@
 package com.gabrielcoman.logd.activities.login;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -25,6 +27,12 @@ public class LoginActivity extends BaseActivity {
         //
         // get elements
         Button loginButton = (Button) findViewById(R.id.LoginButton);
+
+        //
+        // set font
+        TextView mainText = (TextView) findViewById(R.id.MainText);
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/junegull.ttf");
+        mainText.setTypeface(typeface);
 
         //
         // initialize Facebook SDK

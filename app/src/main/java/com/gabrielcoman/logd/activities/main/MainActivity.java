@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends BaseActivity {
@@ -87,6 +88,9 @@ public class MainActivity extends BaseActivity {
         // setup picture
         Picasso.with(MainActivity.this)
                 .load(profile.getProfilePictureUri(260, 260))
+                .placeholder(R.drawable.ic_user_default)
+                .error(R.drawable.ic_user_default)
+                .transform(new CropCircleTransformation())
                 .into(profilePicture);
 
         //
