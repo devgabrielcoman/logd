@@ -28,4 +28,8 @@ class ChartViewModel {
     float[] getValues() {
         return values;
     }
+
+    boolean isValid () {
+        return labels != null && values != null && labels.length > 0 && values.length > 0;
+    }
 }

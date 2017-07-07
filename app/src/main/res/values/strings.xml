@@ -26,6 +26,11 @@
     <string name="activity_journal_save">Save</string>
     <string name="activity_journal_placeholder">Share your thoughts &#8230;</string>
 
+    <!-- Main Activity -->
+    <string name="activity_main_noresponse_text">Hey! It seems you don\'t have any logs yet! Care to give it a go?</string>
+    <string name="activity_main_noresponses_try">Start</string>
+    <string name="activity_main_no_logs">%1$d LOGS</string>
+
     <!-- toast -->
     <string name="data_question_answered_toast">Log recorded.</string>
     <string name="data_question_answered_toast_error">Log failed to record. Try again!</string>

@@ -11,6 +11,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,14 +48,9 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FloatingActionButton journalButton = (FloatingActionButton) findViewById(R.id.JournalButton);
-        ListView history = (ListView) findViewById(R.id.History);
-        ImageView profilePicture = (ImageView) findViewById(R.id.ProfilePicture);
-        TextView profileName = (TextView) findViewById(R.id.ProfileName);
-        TextView profileNoLogs = (TextView) findViewById(R.id.ProfileNrLogs);
-
         Profile profile = Profile.getCurrentProfile();
-        String id = profile.getId();
+        ListView history = (ListView) findViewById(R.id.History);
+        FloatingActionButton journalButton = (FloatingActionButton) findViewById(R.id.JournalButton);
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.MainToolbar);
         setSupportActionBar(toolbar);
@@ -84,6 +80,30 @@ public class MainActivity extends BaseActivity {
 
         ViewCompat.setNestedScrollingEnabled(history, true);
 
+        journalButton.setVisibility(View.GONE);
+
+        RxView.clicks(journalButton)
+                .subscribe(aVoid -> {
+                    Intent journalIntent = new Intent(MainActivity.this, JournalActivity.class);
+                    MainActivity.this.startActivityForResult(journalIntent, SET_REQ_CODE);
+                });
+
+        //
+        // update data at start
+        updateProfile();
+        updateData();
+
+        //
+        // update data
+        setOnActivityResult(this::updateData);
+    }
+
+    void updateProfile () {
+        ImageView profilePicture = (ImageView) findViewById(R.id.ProfilePicture);
+        TextView profileName = (TextView) findViewById(R.id.ProfileName);
+
+        Profile profile = Profile.getCurrentProfile();
+
         //
         // setup picture
         Picasso.with(MainActivity.this)
@@ -96,8 +116,21 @@ public class MainActivity extends BaseActivity {
         //
         // setup profile
         profileName.setText(profile.getName());
+    }
 
-        GetResponsesRequest request = new GetResponsesRequest(id);
+    void updateData () {
+
+        //
+        // get views to update
+        ListView history = (ListView) findViewById(R.id.History);
+        TextView profileNoLogs = (TextView) findViewById(R.id.ProfileNrLogs);
+        FloatingActionButton journalButton = (FloatingActionButton) findViewById(R.id.JournalButton);
+
+        Profile profile = Profile.getCurrentProfile();
+
+        //
+        // start process
+        GetResponsesRequest request = new GetResponsesRequest(profile.getId());
         NetworkTask<GetResponsesRequest> task = new NetworkTask<>();
         task.execute(request)
                 .toObservable()
@@ -132,7 +165,9 @@ public class MainActivity extends BaseActivity {
                     List<Object> finalModels = new ArrayList<>();
 
                     ChartViewModel chartViewModel = new ChartViewModel(models);
-                    finalModels.add(chartViewModel);
+                    if (chartViewModel.isValid()) {
+                        finalModels.add(chartViewModel);
+                    }
 
                     for (ResponseGroupViewModel vm : models) {
                         finalModels.add(vm);
@@ -142,6 +177,22 @@ public class MainActivity extends BaseActivity {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(models -> {
+
+                    if (models.size() == 0) {
+                        models.add(0);
+                    } else {
+                        journalButton.setVisibility(View.VISIBLE);
+                    }
+
+                    //
+                    // header no logs
+                    int nrLogs = 0;
+                    for (Object vm : models) {
+                        if (vm instanceof ResponseGroupViewModel) {
+                            nrLogs += ((ResponseGroupViewModel)vm).getViewModels().size();
+                        }
+                    }
+                    profileNoLogs.setText(getString(R.string.activity_main_no_logs, nrLogs));
 
                     //
                     // customise the table
@@ -175,16 +226,19 @@ public class MainActivity extends BaseActivity {
                                     holder.addView(content);
                                 }
                             })
+                            .customiseRow(R.layout.row_noresponses, Integer.class, (view, integer) -> {
+
+                                RxView.clicks(view.findViewById(R.id.StartBtn))
+                                        .subscribe(aVoid -> {
+                                            Intent journalIntent = new Intent(MainActivity.this, JournalActivity.class);
+                                            MainActivity.this.startActivityForResult(journalIntent, SET_REQ_CODE);
+                                        });
+
+                            })
                             .update(models);
 
                 }, throwable -> {
                     Log.e("Logd", throwable.getMessage());
-                });
-
-        RxView.clicks(journalButton)
-                .subscribe(aVoid -> {
-                    Intent journalIntent = new Intent(MainActivity.this, JournalActivity.class);
-                    MainActivity.this.startActivityForResult(journalIntent, SET_REQ_CODE);
                 });
     }
 }

@@ -4,11 +4,13 @@
     <color name="primary">#ac9f92</color>
     <color name="primary_dark">#2e2e2e</color>
     <color name="primary_light">#ded0c2</color>
-    <color name="accent">#00c963</color>
+    <color name="accent">#ffb74d</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
+    <color name="bg1">#f5f5f6</color>
+    <color name="bg2">#e1e2e1</color>
 
     <!-- aux colors -->
     <color name="colorWhite">#ffffff</color>

@@ -28,4 +28,9 @@
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:background">@drawable/action_btn</item>
     </style>
+
+    <style name="OtherButtonStyle">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:background">@drawable/other_btn</item>
+    </style>
 </resources>

@@ -58,7 +58,6 @@
                 <TextView
                     android:layout_below="@+id/ProfileName"
                     android:id="@+id/ProfileNrLogs"
-                    android:text="20 LOGS"
                     android:textAllCaps="true"
                     android:textSize="12sp"
                     android:textAlignment="center"
@@ -83,6 +82,7 @@
         android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:divider="@null"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <android.support.design.widget.FloatingActionButton

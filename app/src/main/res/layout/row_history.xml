@@ -2,37 +2,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical"
+    android:background="@color/bg1">
 
     <LinearLayout
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="12dp">
-
-        <TextView
-            android:id="@+id/DayOfMonth"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:textColor="@color/primary_text"
-            android:text="02"/>
-        <TextView
-            android:id="@+id/MonthYear"
-            android:text="Jan 2017"
-            android:gravity="center"
-            android:textColor="@color/primary_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ResponseHolder"
-        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="12dp">
+
+            <TextView
+                android:id="@+id/DayOfMonth"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_text"
+                android:text="02"/>
+            <TextView
+                android:id="@+id/MonthYear"
+                android:text="Jan 2017"
+                android:gravity="center"
+                android:textColor="@color/primary_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ResponseHolder"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
 </LinearLayout>
