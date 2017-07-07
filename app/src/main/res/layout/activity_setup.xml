@@ -7,6 +7,12 @@
     tools:context="com.gabrielcoman.logd.activities.setup.SetupActivity">
 
     <ImageView
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageView
         android:id="@+id/ProfilePicture"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"

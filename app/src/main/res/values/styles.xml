@@ -25,7 +25,6 @@
     </style>
 
     <style name="ActionButtonStyle">
-        <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:background">@drawable/action_btn</item>
     </style>
