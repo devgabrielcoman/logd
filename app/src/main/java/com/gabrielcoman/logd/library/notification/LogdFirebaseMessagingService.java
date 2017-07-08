@@ -2,6 +2,7 @@ package com.gabrielcoman.logd.library.notification;
 
 import android.app.Notification;
 import android.content.Context;
+import android.util.Log;
 
 import com.gabrielcoman.logd.library.notification.NotificationCreator;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -40,7 +41,7 @@ public class LogdFirebaseMessagingService extends FirebaseMessagingService {
             Boolean isMorning = true;
             try {
                 String sIsMorning = data.get("isMorning");
-                isMorning = Boolean.getBoolean(sIsMorning);
+                isMorning = sIsMorning.equals("true");
             } catch (NullPointerException e) {
                 // do nothing
             }

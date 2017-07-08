@@ -12,16 +12,16 @@ import android.widget.RemoteViews;
 import com.gabrielcoman.logd.R;
 import com.gabrielcoman.logd.activities.answer.AnswerActivity;
 
-public class NotificationCreator {
+class NotificationCreator {
 
     private static final int NOTIFICATION_ID = 2315552;
 
-    public void fireNotification (Context context, Notification notification) {
+    void fireNotification(Context context, Notification notification) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, notification);
     }
 
-    public Notification createNotification (Context context, boolean isMorning, String question) {
+    Notification createNotification(Context context, boolean isMorning, String question) {
 
         //
         // intent
